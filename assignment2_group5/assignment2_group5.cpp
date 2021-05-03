@@ -1,20 +1,72 @@
-// assignment2_group5.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+#include <string>
+
+#include <vector>
+
+#include <sstream>
+
+#include <../../Menu.h>
+
+#include <../../Item.h>
+
+#include <../../SpecialItem.h>
+
+#include <../../User.h>
+
+#include <../../Shop.h>
+
+using namespace std;
+
+int main() {
+	string option;
+	Shop shop;
+	do {
+		Menu::DisplayMainMenu();
+		cout << "Enter option: ";
+		cin >> option;
+		if (option == "1") {
+			string optionForItem;
+			do {
+				Menu::DisplayCRUDForItem();
+				cout << "Enter option: ";
+				cin >> optionForItem;
+				if (optionForItem == "1") {
+					int type = Menu::DisplayTypeOfItem();
+					shop.AddItem(type);
+				}
+				else if (optionForItem == "2") {
+					int type = Menu::DisplayTypeOfItem();
+					shop.UpdateItem(type);
+				}
+				else if (optionForItem == "3") {
+					int type = Menu::DisplayTypeOfItem();
+					shop.DeleteItem(type);
+				}
+			} while (optionForItem != "4");
+		}
+		else if (option == "2") {
+			string optionForUser;
+			do {
+				Menu::DisplayCRUDForUser();
+				cout << "Enter option: ";
+				cin >> optionForUser;
+				if (optionForUser == "1") {
+					shop.AddUser();
+				}
+				else if (optionForUser == "2") {
+					shop.UpdateUser();
+				}
+			} while (optionForUser != "3");
+		}
+		else if (option == "8") {
+			shop.ShowAllUsers();
+		}
+		else if (option == "6") {
+			shop.ShowAllItems();
+		}
+
+	} while (option != "Exit");
+	return 0;
+
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

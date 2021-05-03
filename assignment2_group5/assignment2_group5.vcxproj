@@ -152,6 +152,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="assignment2_group5.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Shop.cpp" />
+    <ClCompile Include="SpecialItem.cpp" />
+    <ClCompile Include="User.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Shop.h" />
+    <ClInclude Include="SpecialItem.h" />
+    <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
