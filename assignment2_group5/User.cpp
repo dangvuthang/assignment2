@@ -39,7 +39,7 @@ void User::SetName() {
 }
 void User::SetAddress() {
 	cout << "Address: ";
-	cin >> this->address;
+	getline(cin, this->address);
 }
 void User::SetPhone() {
 	cout << "Phone: ";
