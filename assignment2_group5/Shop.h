@@ -23,6 +23,7 @@ class Shop {
 		void DeleteItem(int type);
 		void AddUser();
 		void ShowAllUsers();
+		void ShowAllUsers(int type);
 		void UpdateUser();
 };
 

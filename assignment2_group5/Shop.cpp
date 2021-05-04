@@ -199,5 +199,27 @@ void Shop::UpdateUser() {
 	listOfUsers[index].SetName();
 	listOfUsers[index].SetAddress();
 	listOfUsers[index].SetPhone();
-	listOfUsers[index].SetRole();
 }
+
+void Shop::ShowAllUsers(int type) {
+	string role;
+	int count = 0;
+	if (type == 1) role = "Guest";
+	if (type == 2) role = "Regular";
+	if (type == 3) role = "VIP";
+	if (listOfUsers.size() == 0) {
+		cout << "No users available" << endl;
+		return;
+	}
+	for (size_t i = 0; i < listOfUsers.size(); i++)
+	{
+		if (i == 0) {
+			if (type == 1) cout << "Guest Role: " << endl;
+			if (type == 2) cout << "Regular Role: " << endl;
+			if (type == 3) cout << "VIP Role: " << endl;
+		}
+		if (listOfUsers[i].GetRole() == role) 
+			cout << ++count  << ". ID: " << listOfUsers[i].GetId() << ", Name: " << listOfUsers[i].GetName() << ", Address: " << listOfUsers[i].GetAddress() << ", Phone: " << listOfUsers[i].GetPhone() << endl;
+	}
+}
+

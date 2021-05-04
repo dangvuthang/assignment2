@@ -59,11 +59,16 @@ int main() {
 				}
 			} while (optionForUser != "3");
 		}
+		else if (option == "6") {
+			shop.ShowAllItems();
+		}
 		else if (option == "8") {
 			shop.ShowAllUsers();
 		}
-		else if (option == "6") {
-			shop.ShowAllItems();
+		else if (option == "9") {
+			shop.ShowAllUsers(1);
+			shop.ShowAllUsers(2);
+			shop.ShowAllUsers(3);
 		}
 
 	} while (option != "Exit");
