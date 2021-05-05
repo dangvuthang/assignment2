@@ -59,6 +59,13 @@ int main() {
 				}
 			} while (optionForUser != "3");
 		}
+		else if (option == "4") {
+			int type = Menu::DisplayTypeOfItem();	
+			if(type == 1) shop.ShowVideoGames();
+			if(type == 2) shop.ShowDVDs();
+			if(type == 3) shop.ShowRecords();
+			
+		}
 		else if (option == "6") {
 			shop.ShowAllItems();
 		}

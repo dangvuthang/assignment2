@@ -12,6 +12,12 @@ class Shop {
 		vector<SpecialItem> listOfDVDs;
 		vector<SpecialItem> listOfRecords;
 		vector<User> listOfUsers;
+		void DisplayItemInfo(Item item, int position);
+		void DisplayItemInfo(SpecialItem specialItem, int position);
+		bool IsItemListEmpty();
+		bool IsItemListEmpty(int type);
+		void DisplayUserInfo(User user, int position);
+		bool IsUserListEmpty();
 	public:
 		Shop();
 		void AddItem(int type);
