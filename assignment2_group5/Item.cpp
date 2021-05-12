@@ -85,6 +85,11 @@ void Item::SetRentalStatus() {
   } while (!(input == "1" || input == "2"));
   this->rentalStatus = input == "1" ? "Borrowed" : "Available";
 }
+void Item::updateValueAfterReturning() {
+  this->numberOfCopies++;
+  this->rentalStatus = "Available";
+}
+
 string Item::ToString() {
   stringstream ss;
   ss << rentalFee;

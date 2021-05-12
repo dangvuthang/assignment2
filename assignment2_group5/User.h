@@ -10,6 +10,7 @@ class User {
   string address;
   string phone;
   string role;
+  int numberOfItemReturned;
   vector<string> listOfRentals;
 
  public:
@@ -19,6 +20,7 @@ class User {
   string GetAddress();
   string GetPhone();
   string GetRole();
+  int GetNumberOfItemReturned();
   vector<string> GetListOfRentals();
   void SetId();
   void SetName();
@@ -26,6 +28,7 @@ class User {
   void SetPhone();
   void SetRole();
   void SetRole(string role);
+  string ReturnRental(int index);
   void AddRental(string itemId);
   static bool CheckId(string input);
 };

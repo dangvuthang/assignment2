@@ -5,12 +5,13 @@
 #include <vector>
 using namespace std;
 
-User::User() {}
+User::User() { this->numberOfItemReturned = 0; }
 string User::GetId() { return id; }
 string User::GetName() { return name; }
 string User::GetAddress() { return address; }
 string User::GetPhone() { return phone; }
 string User::GetRole() { return role; }
+int User::GetNumberOfItemReturned() { return numberOfItemReturned; }
 vector<string> User::GetListOfRentals() { return listOfRentals; }
 void User::SetId() {
   string input;
@@ -49,7 +50,7 @@ void User::SetRole() {
 }
 void User::SetRole(string role) { this->role = role; }
 
-void User::AddRental(string itemId) { listOfRentals.push_back(itemId); }
+void User::AddRental(string itemId) { this->listOfRentals.push_back(itemId); }
 
 bool User::CheckId(string input) {
   if (input.length() != 4) return false;
@@ -68,4 +69,11 @@ bool User::CheckId(string input) {
     }
   }
   return true;
+}
+
+string User::ReturnRental(int index) {
+  string itemId = listOfRentals[index];
+  listOfRentals.erase(listOfRentals.begin() + index);
+  this->numberOfItemReturned++;
+  return itemId;
 }

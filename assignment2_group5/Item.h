@@ -29,6 +29,7 @@ class Item {
   void SetLoanType();
   void SetNumberOfCopies();
   void SetNumberOfCopies(bool isLendingTo);
+  void updateValueAfterReturning();
   void SetRentalFee();
   void SetRentalStatus();
   string ToString();

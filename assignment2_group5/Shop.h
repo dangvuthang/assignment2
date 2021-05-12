@@ -25,6 +25,7 @@ class Shop {
   void AddItem(int type);
   void ShowAllItems();
   void ShowAllItems(int type);
+  void ShowAllOutOfStockItems();
   void UpdateItem(int type);
   void DeleteItem(int type);
   void AddUser();
@@ -35,4 +36,7 @@ class Shop {
   int GetItemIndex(int type, bool onlyAvailableItem);
   int GetUserIndex();
   void RentItem(int type);
+  void ReturnItem();
+  Item* FindItem(string itemId);
+  User FindUser(string userId);
 };

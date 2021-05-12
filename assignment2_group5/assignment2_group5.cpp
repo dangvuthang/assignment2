@@ -4,16 +4,17 @@
 #include <../../SpecialItem.h>
 #include <../../User.h>
 
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-
 using namespace std;
 
 int main() {
   string option;
   Shop shop;
+
   do {
     Menu::DisplayMainMenu();
     cout << "Enter option: ";
@@ -50,8 +51,12 @@ int main() {
     } else if (option == "4") {
       int type = Menu::DisplayTypeOfItem();
       shop.RentItem(type);
+    } else if (option == "5") {
+      shop.ReturnItem();
     } else if (option == "6") {
       shop.ShowAllItems();
+    } else if (option == "7") {
+      shop.ShowAllOutOfStockItems();
     } else if (option == "8") {
       shop.ShowAllUsers();
     } else if (option == "9") {
