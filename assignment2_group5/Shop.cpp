@@ -406,7 +406,7 @@ void Shop::RentItem(int type) {
   }
 }
 
-Item* Shop::FindItem(string itemId) {
+Item* Shop::FindItemById(string itemId) {
   for (size_t i = 0; i < listOfVideoGames.size(); i++) {
     if (listOfVideoGames[i].GetId() == itemId) {
       return &listOfVideoGames[i];
@@ -420,6 +420,15 @@ Item* Shop::FindItem(string itemId) {
   for (size_t i = 0; i < listOfRecords.size(); i++) {
     if (listOfRecords[i].GetId() == itemId) {
       return &listOfRecords[i];
+    }
+  }
+  return NULL;
+}
+
+User* Shop::FindUserById(string itemId) {
+  for (size_t i = 0; i < listOfUsers.size(); i++) {
+    if (listOfUsers[i].GetId() == itemId) {
+      return &listOfUsers[i];
     }
   }
   return NULL;
@@ -450,7 +459,7 @@ void Shop::ReturnItem() {
   User u = listOfUsers[indexForUser];
 
   for (size_t i = 0; i < u.GetListOfRentals().size(); i++) {
-    Item* item = FindItem(u.GetListOfRentals()[i]);
+    Item* item = FindItemById(u.GetListOfRentals()[i]);
     cout << i + 1 << ". ID: " << item->GetId()
          << ", Title: " << item->GetTitle() << endl;
   }
@@ -463,5 +472,77 @@ void Shop::ReturnItem() {
   indexForItem--;
   string chosenReturnedItemId =
       listOfUsers[indexForUser].ReturnRental(indexForItem);
-  FindItem(chosenReturnedItemId)->updateValueAfterReturning();
+  FindItemById(chosenReturnedItemId)->updateValueAfterReturning();
+}
+
+void Shop::SearchForItem(int type) {
+  if (type == 1) {
+    string input;
+    do {
+      cout << "Id (Format: Ixxx-yyyy (x, y are number)): ";
+      cin >> input;
+      if (!Item::CheckId(input))
+        cout << "Invalid format. Format: Ixxx-yyyy (x, y are number). Try again"
+             << endl;
+    } while (!Item::CheckId(input));
+    Item* item = FindItemById(input);
+    if (!item)
+      cout << "Can not find item that match the description" << endl;
+    else
+      DisplayItemInfo((*item), 1);
+  } else if (type == 2) {
+    int count = 0;
+    string title;
+    cin.ignore();
+    cout << "Title of the item: ";
+    getline(cin, title);
+    for (size_t i = 0; i < listOfVideoGames.size(); i++) {
+      if (listOfVideoGames[i].GetTitle() == title) {
+        DisplayItemInfo(listOfVideoGames[i], ++count);
+      }
+    }
+    for (size_t i = 0; i < listOfDVDs.size(); i++) {
+      if (listOfDVDs[i].GetId() == title) {
+        DisplayItemInfo(listOfDVDs[i], ++count);
+      }
+    }
+    for (size_t i = 0; i < listOfRecords.size(); i++) {
+      if (listOfRecords[i].GetId() == title) {
+        DisplayItemInfo(listOfRecords[i], ++count);
+      }
+    }
+    if (count == 0)
+      cout << "Can not find item that match the description" << endl;
+  }
+}
+
+void Shop::SearchForUser(int type) {
+  if (type == 1) {
+    string input;
+    do {
+      cout << "Id (Format: Cxxx (x is a number)): ";
+      cin >> input;
+      if (!User::CheckId(input))
+        cout << "Invalid format. Format: Cxxx (x is a number). Try again"
+             << endl;
+    } while (!User::CheckId(input));
+    User* u = FindUserById(input);
+    if (!u)
+      cout << "Can not find user that match the description" << endl;
+    else
+      DisplayUserInfo(*u, 1);
+  } else if (type == 2) {
+    int count = 0;
+    string username;
+    cin.ignore();
+    cout << "User's name: ";
+    getline(cin, username);
+    for (size_t i = 0; i < listOfUsers.size(); i++) {
+      if (listOfUsers[i].GetName() == username) {
+        DisplayUserInfo(listOfUsers[i], ++count);
+      }
+    }
+    if (count == 0)
+      cout << "Can not find user that match the description" << endl;
+  }
 }

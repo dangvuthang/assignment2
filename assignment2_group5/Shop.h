@@ -37,6 +37,8 @@ class Shop {
   int GetUserIndex();
   void RentItem(int type);
   void ReturnItem();
-  Item* FindItem(string itemId);
-  User FindUser(string userId);
+  void SearchForItem(int type);
+  void SearchForUser(int type);
+  Item* FindItemById(string itemId);
+  User* FindUserById(string userId);
 };

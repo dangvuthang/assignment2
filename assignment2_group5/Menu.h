@@ -4,5 +4,7 @@ class Menu {
   static void DisplayMainMenu();
   static void DisplayCRUDForItem();
   static void DisplayCRUDForUser();
+  static void DisplaySearchMenu();
   static int DisplayTypeOfItem();
+  static int DisplayTypeOfSearch();
 };

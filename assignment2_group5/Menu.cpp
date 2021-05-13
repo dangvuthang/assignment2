@@ -38,6 +38,14 @@ void Menu::DisplayCRUDForUser() {
   cout << "------------------------------" << endl;
 }
 
+void Menu::DisplaySearchMenu() {
+  cout << "------------------------------" << endl;
+  cout << "1. Search for items" << endl;
+  cout << "2. Search for users" << endl;
+  cout << "3. Back" << endl;
+  cout << "------------------------------" << endl;
+}
+
 int Menu::DisplayTypeOfItem() {
   string type;
   do {
@@ -48,5 +56,17 @@ int Menu::DisplayTypeOfItem() {
       cout << "Invalid option. Try again" << endl;
     }
   } while (!(type == "1" || type == "2" || type == "3"));
+  return stoi(type);
+}
+
+int Menu::DisplayTypeOfSearch() {
+  string type;
+  do {
+    cout << "Select the type of search (1. By ID, 2. By Name): ";
+    cin >> type;
+    if (!(type == "1" || type == "2")) {
+      cout << "Invalid option. Try again" << endl;
+    }
+  } while (!(type == "1" || type == "2"));
   return stoi(type);
 }

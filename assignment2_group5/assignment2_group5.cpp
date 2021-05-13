@@ -63,8 +63,19 @@ int main() {
       shop.ShowAllUsers(1);
       shop.ShowAllUsers(2);
       shop.ShowAllUsers(3);
+    } else if (option == "10") {
+      string optionForSearch;
+      do {
+        Menu::DisplaySearchMenu();
+        cout << "Enter option: ";
+        cin >> optionForSearch;
+        if (optionForSearch == "1" || optionForSearch == "2") {
+          int typeOfSearch = Menu::DisplayTypeOfSearch();
+          if (optionForSearch == "1") shop.SearchForItem(typeOfSearch);
+          if (optionForSearch == "2") shop.SearchForUser(typeOfSearch);
+        }
+      } while (optionForSearch != "3");
     }
-
   } while (option != "Exit");
   return 0;
 }
