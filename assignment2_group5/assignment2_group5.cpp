@@ -1,8 +1,8 @@
-#include <../../Item.h>
-#include <../../Menu.h>
-#include <../../Shop.h>
-#include <../../SpecialItem.h>
-#include <../../User.h>
+#include "Item.h"
+#include "Menu.h"
+#include "Shop.h"
+#include "SpecialItem.h"
+#include "User.h"
 
 #include <fstream>
 #include <iostream>
@@ -11,9 +11,22 @@
 #include <vector>
 using namespace std;
 
-int main() {
+int main(int argc, char *argv[]) {
+
+  if (argc != 3) {
+    cout << "To run: <program> <item csv file path> <customer csv file path>" << endl;
+    exit(0);
+  }
+
+  string itemFile = argv[1];
+  string customerFile = argv[2];
   string option;
   Shop shop;
+
+  cout << "Loading data..." << endl;
+  shop.loadItem(itemFile);
+  shop.loadUser(customerFile);
+  cout << "Done." << endl;
 
   do {
     Menu::DisplayMainMenu();
@@ -77,5 +90,12 @@ int main() {
       } while (optionForSearch != "3");
     }
   } while (option != "Exit");
+
+  // SAVE
+  cout << "Saving data..." << endl;
+  shop.saveItem(itemFile);
+  shop.saveUser(customerFile);
+  cout << "Done." << endl;
+
   return 0;
 }

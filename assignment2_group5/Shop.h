@@ -41,4 +41,8 @@ class Shop {
   void SearchForUser(int type);
   Item* FindItemById(string itemId);
   User* FindUserById(string userId);
+  void saveItem(string itemFile);
+  void saveUser(string userFile);
+  void loadItem(string itemFile);
+  void loadUser(string userFile);
 };

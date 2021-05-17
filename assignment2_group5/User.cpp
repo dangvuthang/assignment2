@@ -6,6 +6,15 @@
 using namespace std;
 
 User::User() { this->numberOfItemReturned = 0; }
+User::User(string id, string name, string address, string phone, string role, int numberOfItemReturned, vector<string> listOfRentals) {
+  this->id = id;
+  this->name = name;
+  this->address = address;
+  this->phone = phone;
+  this->role = role;
+  this->numberOfItemReturned = numberOfItemReturned;
+  this->listOfRentals = listOfRentals;
+}
 string User::GetId() { return id; }
 string User::GetName() { return name; }
 string User::GetAddress() { return address; }

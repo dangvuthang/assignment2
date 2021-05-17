@@ -1,0 +1,3 @@
+Type,ID,Title,Rental type,Loan Type,Number of copies,Rental fee,Rental status,genre
+1,I123-4567,Test,Game,2-day,0,15,Borrowed,N/A
+2,I123-1234,I,DVD,1-week,1,15,Available,Action

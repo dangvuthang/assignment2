@@ -1,5 +1,5 @@
 #include "Shop.h"
-
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -326,6 +326,9 @@ void Shop::ShowAllUsers() {
   if (!IsUserListEmpty()) {
     for (size_t i = 0; i < listOfUsers.size(); i++) {
       DisplayUserInfo(listOfUsers[i], i + 1);
+      for (string i : listOfUsers[i].GetListOfRentals()) {
+        cout << i << endl;
+      }
     }
   }
 }
@@ -544,5 +547,181 @@ void Shop::SearchForUser(int type) {
     }
     if (count == 0)
       cout << "Can not find user that match the description" << endl;
+  }
+}
+
+void Shop::saveItem(string itemFile) {
+  ofstream itemcsv(itemFile);
+
+  itemcsv << "Type,ID,Title,Rental type,Loan Type,Number of copies,Rental fee,Rental status,genre" << endl;
+  
+  // Save video games
+  for (Item item : this->listOfVideoGames) {
+    itemcsv << "1," << 
+                item.GetId() << "," <<
+                item.GetTitle() << "," <<
+                item.GetRentalType() << "," <<
+                item.GetLoanType() << "," <<
+                item.GetNumberOfCopies() << "," <<
+                item.GetRentalFee() << "," <<
+                item.GetRentalStatus() << "," <<
+                "N/A\n";
+  }
+
+  // Save DVDs
+  for (SpecialItem item : this->listOfDVDs) {
+    itemcsv << "2," << 
+                item.GetId() << "," <<
+                item.GetTitle() << "," <<
+                item.GetRentalType() << "," <<
+                item.GetLoanType() << "," <<
+                item.GetNumberOfCopies() << "," <<
+                item.GetRentalFee() << "," <<
+                item.GetRentalStatus() << "," <<
+                item.GetGenre() << "\n";
+  }
+
+  // Save Records
+  for (SpecialItem item : this->listOfRecords) {
+    itemcsv << "3," << 
+                item.GetId() << "," <<
+                item.GetTitle() << "," <<
+                item.GetRentalType() << "," <<
+                item.GetLoanType() << "," <<
+                item.GetNumberOfCopies() << "," <<
+                item.GetRentalFee() << "," <<
+                item.GetRentalStatus() << "," <<
+                item.GetGenre() << "\n";
+  }
+
+  itemcsv.close();
+}
+
+void Shop::saveUser(string userFile) {
+  ofstream usercsv(userFile);
+
+  usercsv << "ID,name,address,phone,role,number of item returned,list rentals" << endl;
+  
+  // Save video games
+  for (User user : this->listOfUsers) {
+
+    usercsv <<  user.GetId() << "," <<
+                user.GetName() << "," <<
+                user.GetAddress() << "," <<
+                user.GetPhone() << "," <<
+                user.GetRole() << "," <<
+                user.GetNumberOfItemReturned() << ",";
+      
+    vector<string> listOfRental = user.GetListOfRentals();
+    for (auto it = listOfRental.begin(); it != listOfRental.end(); ++it) {
+      if (it != listOfRental.begin()) usercsv << ";";
+      usercsv << *it;
+    }
+    usercsv << "\n";
+  }
+}
+
+void Shop::loadItem(string itemFile) {
+  ifstream itemcsv(itemFile);
+
+  if (!itemcsv.is_open()) {
+    cout << "Cannot load items" << endl;
+    return;
+  }
+
+  string line;
+
+  // Get column name
+  if (itemcsv.good()) getline(itemcsv, line);
+
+  while (getline(itemcsv, line)) {
+    stringstream ss(line);
+    vector<string> resultLine;
+
+    while (ss.good()) {
+      string substr;
+      getline(ss, substr, ',');
+      resultLine.push_back(substr);
+    }
+
+    switch (stoi(resultLine[0])) {
+    case 1:
+      this->listOfVideoGames.push_back(
+          Item( resultLine[1], 
+                resultLine[2], 
+                resultLine[3], 
+                resultLine[4], 
+                stoi(resultLine[5]), 
+                stof(resultLine[6]), 
+                resultLine[7]));
+      break;
+    case 2:
+      this->listOfDVDs.push_back(
+        SpecialItem(resultLine[1], 
+                    resultLine[2], 
+                    resultLine[3], 
+                    resultLine[4], 
+                    stoi(resultLine[5]), 
+                    stof(resultLine[6]), 
+                    resultLine[7],
+                    resultLine[8]));
+      break;
+    case 3:
+      this->listOfRecords.push_back(
+        SpecialItem(resultLine[1], 
+                    resultLine[2], 
+                    resultLine[3], 
+                    resultLine[4], 
+                    stoi(resultLine[5]), 
+                    stof(resultLine[6]), 
+                    resultLine[7],
+                    resultLine[8]));
+      break;
+    }
+  }
+}
+
+void Shop::loadUser(string userFile) {
+  ifstream usercsv(userFile);
+
+  if (!usercsv.is_open()) {
+    cout << "Cannot load users" << endl;
+    return;
+  }
+
+  string line;
+
+  // Get column name
+  if (usercsv.good()) getline(usercsv, line);
+
+  while (getline(usercsv, line)) {
+    stringstream ss(line);
+    vector<string> resultLine;
+    vector<string> listOfRentals;
+
+    while (ss.good()) {
+      string substr;
+      getline(ss, substr, ',');
+      resultLine.push_back(substr);
+    }
+
+    if (resultLine.back() != "") {
+      ss = stringstream(resultLine.back());
+      while (ss.good()) {
+        string substr;
+        getline(ss, substr, ';');
+        listOfRentals.push_back(substr);
+      }
+    }
+
+    this->listOfUsers.push_back(User(
+      resultLine[0],
+      resultLine[1],
+      resultLine[2],
+      resultLine[3],
+      resultLine[4],
+      stoi(resultLine[5]),
+      listOfRentals
+    ));
   }
 }
