@@ -634,7 +634,7 @@ void Shop::StockFromStorage(string filename) {
                 << itemPtr->GetRentalFee() << endl;
             */
 
-            DisplayItemInfo(itemPtr, 0);
+            //DisplayItemInfo(itemPtr, 0);
             listOfItem.push_back(itemPtr);
 
         }
