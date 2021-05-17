@@ -16,7 +16,7 @@ int main() {
     Shop shop;
     shop.StockFromStorage("items.txt");
     //shop.ShowAllItems();
-    /*
+    
     do {
         Menu::DisplayMainMenu();
         cout << "Enter option: ";
@@ -90,6 +90,6 @@ int main() {
             } while (optionForSearch != "3");
         }
     } while (option != "Exit");
-    */
+    
     return 0;
 }
