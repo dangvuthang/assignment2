@@ -4,16 +4,16 @@
 
 #include "Item.h"
 using namespace std;
+enum eGenre { action = 1, horror, drama, comedy };
 class SpecialItem : public Item {
- private:
-  string genre;
+private:
+	eGenre genre;
 
- public:
-  SpecialItem(string id, string title, string rentalType, string loanType,
-              int numberOfCopies, float rentalFee, string rentalStatus,
-              string genre);
-  string GetGenre();
-  void SetGenre();
-  SpecialItem();
-  string ToString();
+public:
+	SpecialItem(string id, string title, eRentalType rentalType, string loanType, int numberOfCopies, float rentalFee, eGenre genre);
+	eGenre GetGenre();
+	virtual string GetGenreString();
+	void SetGenre();
+	SpecialItem();
+	string ToString();
 };
