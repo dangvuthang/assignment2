@@ -32,6 +32,15 @@ void Shop::AddItem(int type) {
   }
 }
 
+bool isNumber(const string& str)
+{
+	for (char const &c : str) {
+		if (isdigit(c) == 0) return false;
+	}
+	return true;
+}
+
+
 void Shop::DisplayItemInfo(Item item, int position) {
   cout << position << ". "
        << "ID: " << item.GetId() << ", Title: " << item.GetTitle()
@@ -154,16 +163,23 @@ void Shop::ShowAllOutOfStockItems() {
 }
 
 int Shop::GetItemIndex(int type) {
-  int index = 0;
+  string index;
   if (type == 1) {
     if (!IsItemListEmpty(1)) {
       ShowAllItems(1);
       do {
         cout << "Select an item's number: ";
         cin >> index;
-        if (!(index >= 1 && index <= listOfVideoGames.size()))
-          cout << "Invalid option. Try again" << endl;
-      } while (!(index >= 1 && index <= listOfVideoGames.size()));
+        if (isNumber(index)){
+          if (!(stoi(index) >= 1 && stoi(index) <= listOfVideoGames.size())){
+            cout << "Invalid option. Try again" << endl;
+          }
+        }
+        else{
+		  cout << "Invalid option. Try again" << endl;
+          index = "0";
+        } 
+      } while (!(stoi(index) >= 1 && stoi(index) <= listOfVideoGames.size()));
     }
   } else if (type == 2) {
     if (!IsItemListEmpty(2)) {
@@ -171,26 +187,40 @@ int Shop::GetItemIndex(int type) {
       do {
         cout << "Select an item's number: ";
         cin >> index;
-        if (!(index >= 1 && index <= listOfDVDs.size()))
-          cout << "Invalid option. Try again" << endl;
-      } while (!(index >= 1 && index <= listOfDVDs.size()));
-    }
+		if (isNumber(index)) {
+			if (!(stoi(index) >= 1 && stoi(index) <= listOfDVDs.size())) {
+				cout << "Invalid option. Try again" << endl;
+			}
+		}
+		else {
+			cout << "Invalid option. Try again" << endl;
+			index = "0";
+		}
+	  } while (!(stoi(index) >= 1 && stoi(index) <= listOfDVDs.size()));
+	}
   } else if (type == 3) {
     if (!IsItemListEmpty(3)) {
       ShowAllItems(3);
       do {
         cout << "Select an item's number: ";
         cin >> index;
-        if (!(index >= 1 && index <= listOfRecords.size()))
-          cout << "Invalid option. Try again" << endl;
-      } while (!(index >= 1 && index <= listOfRecords.size()));
-    }
+		if (isNumber(index)) {
+			if (!(stoi(index) >= 1 && stoi(index) <= listOfRecords.size())) {
+				cout << "Invalid option. Try again" << endl;
+			}
+		}
+		else {
+			cout << "Invalid option. Try again" << endl;
+			index = "0";
+		}
+	  } while (!(stoi(index) >= 1 && stoi(index) <= listOfRecords.size()));
+	}
   }
-  return index - 1;
+  return stoi(index)-1;
 }
 
 int Shop::GetItemIndex(int type, bool onlyAvailableItem) {
-  int index = 0;
+  string index;
   int count = 0;
   vector<int> position;
   if (type == 1) {
@@ -210,9 +240,16 @@ int Shop::GetItemIndex(int type, bool onlyAvailableItem) {
       do {
         cout << "Select an item's number: ";
         cin >> index;
-        if (!(index >= 1 && index <= count))
-          cout << "Invalid option. Try again" << endl;
-      } while (!(index >= 1 && index <= count));
+		if (isNumber(index)) {
+			if (!(stoi(index) >= 1 && stoi(index) <= count))
+				cout << "Invalid option. Try again" << endl;
+		}
+		else {
+			cout << "Invalid option. Try again" << endl;
+			index = "0";
+		}
+        
+      } while (!(stoi(index) >= 1 && stoi(index) <= count));
     }
   } else if (type == 2) {
     if (!IsItemListEmpty(2)) {
@@ -231,10 +268,18 @@ int Shop::GetItemIndex(int type, bool onlyAvailableItem) {
       do {
         cout << "Select an item's number: ";
         cin >> index;
-        if (!(index >= 1 && index <= count))
-          cout << "Invalid option. Try again" << endl;
-      } while (!(index >= 1 && index <= count));
-    }
+		cin >> index;
+		if (isNumber(index)) {
+			if (!(stoi(index) >= 1 && stoi(index) <= count))
+				cout << "Invalid option. Try again" << endl;
+		}
+		else {
+			cout << "Invalid option. Try again" << endl;
+			index = "0";
+		}
+
+	  } while (!(stoi(index) >= 1 && stoi(index) <= count));
+	}
   } else if (type == 3) {
     if (!IsItemListEmpty(3)) {
       for (size_t i = 0; i < listOfRecords.size(); i++) {
@@ -252,12 +297,20 @@ int Shop::GetItemIndex(int type, bool onlyAvailableItem) {
       do {
         cout << "Select an item's number: ";
         cin >> index;
-        if (!(index >= 1 && index <= count))
-          cout << "Invalid option. Try again" << endl;
-      } while (!(index >= 1 && index <= count));
-    }
+		cin >> index;
+		if (isNumber(index)) {
+			if (!(stoi(index) >= 1 && stoi(index) <= count))
+				cout << "Invalid option. Try again" << endl;
+		}
+		else {
+			cout << "Invalid option. Try again" << endl;
+			index = "0";
+		}
+
+	  } while (!(stoi(index) >= 1 && stoi(index) <= count));
+	}
   }
-  return count != 0 ? position[index - 1] : -1;
+  return count != 0 ? position[stoi(index) - 1] : -1;
 }
 
 void Shop::UpdateItem(int type) {
@@ -334,17 +387,24 @@ void Shop::ShowAllUsers() {
 }
 
 int Shop::GetUserIndex() {
-  int index = 0;
+  string index = "0";
   if (!IsUserListEmpty()) {
     do {
       ShowAllUsers();
       cout << "Select a user: ";
       cin >> index;
-      if (!(index >= 1 && index <= listOfUsers.size()))
-        cout << "Invalid option. Try again" << endl;
-    } while (!(index >= 1 && index <= listOfUsers.size()));
+	  if (isNumber(index)) {
+		  if (!(stoi(index) >= 1 && stoi(index) <= listOfUsers.size()))
+			  cout << "Invalid option. Try again" << endl;
+	  }
+	  else {
+		  cout << "Invalid option. Try again" << endl;
+		  index = "0";
+	  }
+      
+    } while (!(stoi(index) >= 1 && stoi(index) <= listOfUsers.size()));
   }
-  return index - 1;
+  return stoi(index) - 1;
 }
 
 void Shop::UpdateUser() {
@@ -439,8 +499,8 @@ User* Shop::FindUserById(string itemId) {
 
 void Shop::ReturnItem() {
   int count = 0;
-  int indexForUser;
-  int indexForItem;
+  string indexForUser;
+  string indexForItem;
   vector<int> position;
   for (size_t i = 0; i < listOfUsers.size(); i++) {
     if (listOfUsers[i].GetListOfRentals().size() > 0) {
@@ -455,11 +515,17 @@ void Shop::ReturnItem() {
   do {
     cout << "Select a user: ";
     cin >> indexForUser;
-    if (!(indexForUser >= 1 && indexForUser <= count))
-      cout << "Invalid option. Try again" << endl;
-  } while (!(indexForUser >= 1 && indexForUser <= count));
-  indexForUser--;
-  User u = listOfUsers[indexForUser];
+	if (isNumber(indexForUser)) {
+		if (!(stoi(indexForUser) >= 1 && stoi(indexForUser) <= count))
+			cout << "Invalid option. Try again" << endl;
+	}
+	else {
+		cout << "Invalid option. Try again" << endl;
+		indexForUser = "0";
+	}
+    
+  } while (!(stoi(indexForUser) >= 1 && stoi(indexForUser) <= count));
+  User u = listOfUsers[stoi(indexForUser)-1];
 
   for (size_t i = 0; i < u.GetListOfRentals().size(); i++) {
     Item* item = FindItemById(u.GetListOfRentals()[i]);
@@ -469,12 +535,18 @@ void Shop::ReturnItem() {
   do {
     cout << "Select an item to return: ";
     cin >> indexForItem;
-    if (!(indexForItem >= 1 && indexForItem <= u.GetListOfRentals().size()))
-      cout << "Invalid option. Try again" << endl;
-  } while (!(indexForItem >= 1 && indexForItem <= u.GetListOfRentals().size()));
-  indexForItem--;
+	if (isNumber(indexForItem)) {
+		if (!(stoi(indexForItem) >= 1 && stoi(indexForItem) <= u.GetListOfRentals().size()))
+			cout << "Invalid option. Try again" << endl;
+	}
+	else {
+		cout << "Invalid option. Try again" << endl;
+		indexForItem = "0";
+	}
+    
+  } while (!(stoi(indexForItem) >= 1 && stoi(indexForItem) <= u.GetListOfRentals().size()));
   string chosenReturnedItemId =
-      listOfUsers[indexForUser].ReturnRental(indexForItem);
+      listOfUsers[stoi(indexForUser)-1].ReturnRental(stoi(indexForItem)-1);
   FindItemById(chosenReturnedItemId)->updateValueAfterReturning();
 }
 
