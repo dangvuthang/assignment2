@@ -8,40 +8,37 @@
 #include "User.h"
 using namespace std;
 class Shop {
-private:
-	//vector<Item> listOfVideoGames;
-	//vector<SpecialItem> listOfDVDs;
-	//vector<SpecialItem> listOfRecords;
-	vector<User> listOfUsers;
-	vector<Item*> listOfItem;
+ private:
+  vector<Item> listOfVideoGames;
+  vector<SpecialItem> listOfDVDs;
+  vector<SpecialItem> listOfRecords;
+  vector<User> listOfUsers;
+  void DisplayItemInfo(Item item, int position);
+  void DisplayItemInfo(SpecialItem specialItem, int position);
+  bool IsItemListEmpty();
+  bool IsItemListEmpty(int type);
+  void DisplayUserInfo(User user, int position);
+  bool IsUserListEmpty();
 
-	void DisplayItemInfo(Item* item, int position);
-	//void DisplayItemInfo(SpecialItem *specialItem, int position);
-	bool IsItemListEmpty();
-	bool IsItemListEmpty(eRentalType type);
-	void DisplayUserInfo(User user, int position);
-	bool IsUserListEmpty();
-
-public:
-	Shop();
-	void AddItem(eRentalType type);
-	void ShowAllItems();
-	void ShowAllItems(eRentalType type);
-	void ShowAllOutOfStockItems();
-	void UpdateItem(eRentalType type);
-	void DeleteItem(eRentalType type);
-	void AddUser();
-	void ShowAllUsers();
-	void ShowAllUsers(int type);
-	void UpdateUser();
-	int GetItemIndex(eRentalType type, bool onlyAvailableItem);
-	int GetItemIndex(eRentalType type);
-	int GetUserIndex();
-	void RentItem(eRentalType type);
-	void ReturnItem();
-	void SearchForItem(int type);
-	void SearchForUser(int type);
-	Item* FindItemById(string itemId);
-	User* FindUserById(string userId);
-	void StockFromStorage(string filename);
+ public:
+  Shop();
+  void AddItem(int type);
+  void ShowAllItems();
+  void ShowAllItems(int type);
+  void ShowAllOutOfStockItems();
+  void UpdateItem(int type);
+  void DeleteItem(int type);
+  void AddUser();
+  void ShowAllUsers();
+  void ShowAllUsers(int type);
+  void UpdateUser();
+  int GetItemIndex(int type);
+  int GetItemIndex(int type, bool onlyAvailableItem);
+  int GetUserIndex();
+  void RentItem(int type);
+  void ReturnItem();
+  void SearchForItem(int type);
+  void SearchForUser(int type);
+  Item* FindItemById(string itemId);
+  User* FindUserById(string userId);
 };

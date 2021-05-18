@@ -51,12 +51,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="customers.txt">
-      <Filter>Source Files</Filter>
-    </Text>
-    <Text Include="..\..\..\EEET2482 Software Engineering Design\Assignment 2\items.txt">
-      <Filter>Source Files</Filter>
-    </Text>
-  </ItemGroup>
 </Project>
