@@ -623,6 +623,9 @@ void Shop::SearchForUser(int type) {
 }
 
 void Shop::saveItem(string itemFile) {
+  if(!itemFile.find(".csv") != string::npos){
+    itemFile += ".csv";
+  }
   ofstream itemcsv(itemFile);
 
   itemcsv << "Type,ID,Title,Rental type,Loan Type,Number of copies,Rental fee,Rental status,genre" << endl;
@@ -670,6 +673,9 @@ void Shop::saveItem(string itemFile) {
 }
 
 void Shop::saveUser(string userFile) {
+  if(!itemFile.find(".csv") != string::npos){
+    itemFile += ".csv";
+  }
   ofstream usercsv(userFile);
 
   usercsv << "ID,name,address,phone,role,number of item returned,list rentals" << endl;
