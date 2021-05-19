@@ -19,6 +19,8 @@ class Shop {
   bool IsItemListEmpty(int type);
   void DisplayUserInfo(User user, int position);
   bool IsUserListEmpty();
+  bool CheckIfUserCanBorrowItem(int itemType, int indexForItem,
+                                int indexForUser);
 
  public:
   Shop();
