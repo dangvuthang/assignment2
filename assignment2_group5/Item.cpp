@@ -62,7 +62,15 @@ void Item::SetNumberOfCopies() {
   cout << "Number of copies: ";
   cin >> this->numberOfCopies;
 }
-
+/*
+void Item::SetNumberOfCopies(bool isLendingTo) {
+  if (isLendingTo) {
+    this->numberOfCopies = this->numberOfCopies - 1;
+    if (this->numberOfCopies == 0) this->rentalStatus = "Borrowed";
+  } else
+    this->SetNumberOfCopies();
+}
+*/
 void Item::SetRentalFee() {
   // Add condition to check real number
   cout << "Rental fee: ";
@@ -83,7 +91,6 @@ void Item::updateValueAfterRenting() {
     if (numberOfCopies == 0) {
         this->rentalStatus = "Borrowed";
     }
-    
 }
 void Item::updateValueAfterReturning() {
     if (numberOfCopies == 0) {
@@ -91,7 +98,6 @@ void Item::updateValueAfterReturning() {
     }
     this->numberOfCopies++;
 }
-  
 
 string Item::ToString() {
   stringstream ss;

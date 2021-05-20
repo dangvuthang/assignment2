@@ -6,8 +6,11 @@
 
 #include "Item.h"
 using namespace std;
-SpecialItem::SpecialItem(string id, string title, string rentalType, string loanType, int numberOfCopies, float rentalFee, string rentalStatus, string genre)
-    : Item(id, title, rentalType, loanType, numberOfCopies, rentalFee, rentalStatus) {
+SpecialItem::SpecialItem(string id, string title, string rentalType,
+                         string loanType, int numberOfCopies, float rentalFee,
+                         string rentalStatus, string genre)
+    : Item(id, title, rentalType, loanType, numberOfCopies, rentalFee,
+           rentalStatus) {
   this->genre = genre;
 }
 string SpecialItem::GetGenre() { return genre; }

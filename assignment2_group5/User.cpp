@@ -3,16 +3,26 @@
 #include <iostream>
 #include <string>
 #include <vector>
-using namespace std; 
+using namespace std;
+
+User::User() { this->numberOfItemReturned = 0; }
 User::User(string id, string name, string address, string phone, string role) {
+  this->id = id;
+  this->name = name;
+  this->address = address;
+  this->phone = phone;
+  this->role = role;
+  this->numberOfItemReturned = 0;
+}
+User::User(string id, string name, string address, string phone, string role, int numberOfItemReturned, vector<string> listOfRentals) {
     this->id = id;
     this->name = name;
     this->address = address;
     this->phone = phone;
     this->role = role;
     this->numberOfItemReturned = 0;
+    this->listOfRentals = listOfRentals;
 }
-User::User() { this->numberOfItemReturned = 0; }
 string User::GetId() { return id; }
 string User::GetName() { return name; }
 string User::GetAddress() { return address; }
@@ -46,13 +56,13 @@ void User::SetPhone() {
 void User::SetRole(bool newUser) {
     if (newUser == true) {
         this->role = "Guest";
-    } else {
+    }
+    else {
         this->role = "Regular";
         numberOfItemReturned = 0;
     }
-  
 }
-    
+
 void User::AddRental(string itemId) { this->listOfRentals.push_back(itemId); }
 
 bool User::CheckId(string input) {
@@ -74,9 +84,9 @@ bool User::CheckId(string input) {
   return true;
 }
 
-void User::ReturnRental(int index) {
-  //string itemId = listOfRentals[index];
+string User::ReturnRental(int index) {
+  string itemId = listOfRentals[index];
   listOfRentals.erase(listOfRentals.begin() + index);
   this->numberOfItemReturned++;
-  //return itemId;
+  return itemId;
 }

@@ -1,42 +1,35 @@
-﻿  assignment2_group5.cpp
-  Item.cpp
-  Menu.cpp
-  Shop.cpp
-C:\Users\Admin\Downloads\Compressed\assignment2-73df89e02588c95868d32ab108c0705a6176576f\assignment2_group5\Shop.cpp(99,51): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Admin\Downloads\Compressed\assignment2-73df89e02588c95868d32ab108c0705a6176576f\assignment2_group5\Shop.cpp(107,45): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Admin\Downloads\Compressed\assignment2-73df89e02588c95868d32ab108c0705a6176576f\assignment2_group5\Shop.cpp(115,48): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Admin\Downloads\Compressed\assignment2-73df89e02588c95868d32ab108c0705a6176576f\assignment2_group5\Shop.cpp(200,31): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+﻿  Shop.cpp
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(110,51): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(118,45): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(126,48): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(229,31): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\Admin\Downloads\Compressed\assignment2-73df89e02588c95868d32ab108c0705a6176576f\assignment2_group5\Shop.cpp(221,31): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(256,31): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\Admin\Downloads\Compressed\assignment2-73df89e02588c95868d32ab108c0705a6176576f\assignment2_group5\Shop.cpp(242,31): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(283,31): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\Admin\Downloads\Compressed\assignment2-73df89e02588c95868d32ab108c0705a6176576f\assignment2_group5\Shop.cpp(442,37): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(490,37): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\Admin\Downloads\Compressed\assignment2-73df89e02588c95868d32ab108c0705a6176576f\assignment2_group5\Shop.cpp(594,41): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(682,41): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-C:\Users\Admin\Downloads\Compressed\assignment2-73df89e02588c95868d32ab108c0705a6176576f\assignment2_group5\Shop.cpp(629,41): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(727,41): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-  SpecialItem.cpp
-  SpecialUser.cpp
-  User.cpp
-  Generating Code...
-  assignment2_group5.vcxproj -> C:\Users\Admin\Downloads\Compressed\assignment2-73df89e02588c95868d32ab108c0705a6176576f\x64\Debug\assignment2_group5.exe
+  assignment2_group5.vcxproj -> C:\Users\Admin\Downloads\Compressed\assignment2-main\x64\Debug\assignment2_group5.exe

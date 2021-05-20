@@ -34,8 +34,7 @@ void Menu::DisplayCRUDForUser() {
   cout << "------------------------------" << endl;
   cout << "1. Add new customer" << endl;
   cout << "2. Update a customer" << endl;
-  cout << "3. Delete a customer" << endl;
-  cout << "4. Back" << endl;
+  cout << "3. Back" << endl;
   cout << "------------------------------" << endl;
 }
 
