@@ -70,3 +70,15 @@ int Menu::DisplayTypeOfSearch() {
   } while (!(type == "1" || type == "2"));
   return stoi(type);
 }
+
+int Menu::DisplayTypeOfPromotion() {
+  string type;
+  do {
+    cout << "Select the type of promotion (1. To Regular, 2. To VIP): ";
+    cin >> type;
+    if (!(type == "1" || type == "2")) {
+      cout << "Invalid option. Try again" << endl;
+    }
+  } while (!(type == "1" || type == "2"));
+  return stoi(type);
+}

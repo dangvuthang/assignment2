@@ -33,6 +33,7 @@ class Shop {
   void AddUser();
   void ShowAllUsers();
   void ShowAllUsers(int type);
+  void PromoteAUser(int type);
   void UpdateUser();
   int GetItemIndex(int type);
   int GetItemIndex(int type, bool onlyAvailableItem);

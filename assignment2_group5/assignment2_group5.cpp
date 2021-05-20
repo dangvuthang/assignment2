@@ -1,25 +1,27 @@
-#include "Item.h"
-#include "Menu.h"
-#include "Shop.h"
-#include "SpecialItem.h"
-#include "User.h"
-
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+
+#include "Item.h"
+#include "Menu.h"
+#include "Shop.h"
+#include "SpecialItem.h"
+#include "User.h"
 using namespace std;
 
 int main(int argc, char *argv[]) {
-
   if (argc != 3) {
-    cout << "To run: <program> <item csv file path> <customer csv file path>" << endl;
+    cout << "To run: <program> <item csv file path> <customer csv file path>"
+         << endl;
     exit(0);
   }
 
   string itemFile = argv[1];
   string customerFile = argv[2];
+  // string itemFile = "items";
+  // string customerFile = "customers";
   string option;
   Shop shop;
 
@@ -61,6 +63,9 @@ int main(int argc, char *argv[]) {
           shop.UpdateUser();
         }
       } while (optionForUser != "3");
+    } else if (option == "3") {
+      int type = Menu::DisplayTypeOfPromotion();
+      shop.PromoteAUser(type);
     } else if (option == "4") {
       int type = Menu::DisplayTypeOfItem();
       shop.RentItem(type);

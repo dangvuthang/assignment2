@@ -178,7 +178,8 @@ int Shop::GetItemIndex(int type) {
           index = "0";
         }
       } while (!(stoi(index) >= 1 && stoi(index) <= listOfVideoGames.size()));
-    }
+    } else
+      return -1;
   } else if (type == 2) {
     if (!IsItemListEmpty(2)) {
       ShowAllItems(2);
@@ -194,7 +195,8 @@ int Shop::GetItemIndex(int type) {
           index = "0";
         }
       } while (!(stoi(index) >= 1 && stoi(index) <= listOfDVDs.size()));
-    }
+    } else
+      return -1;
   } else if (type == 3) {
     if (!IsItemListEmpty(3)) {
       ShowAllItems(3);
@@ -210,7 +212,8 @@ int Shop::GetItemIndex(int type) {
           index = "0";
         }
       } while (!(stoi(index) >= 1 && stoi(index) <= listOfRecords.size()));
-    }
+    } else
+      return -1;
   }
   return stoi(index) - 1;
 }
@@ -393,7 +396,6 @@ int Shop::GetUserIndex() {
         cout << "Invalid option. Try again" << endl;
         index = "0";
       }
-
     } while (!(stoi(index) >= 1 && stoi(index) <= listOfUsers.size()));
   }
   return stoi(index) - 1;
@@ -515,6 +517,18 @@ void Shop::RentItem(int type) {
   int indexForUser = GetUserIndex();
   if (indexForUser == -1) return;
   if (CheckIfUserCanBorrowItem(type, indexForItem, indexForUser)) {
+    string option;
+
+    if (listOfUsers[indexForUser].GetRole() == "VIP" &&
+        listOfUsers[indexForUser].GetRewardPointForVIP() >= 100) {
+      do {
+        cout << "Would you like to use 100 point to borrowed an item?" << endl;
+        cout << "1. Yes/ 2. No: ";
+        cin >> option;
+        if (!(option == "1" || option == "2")) cout << "Invalid option" << endl;
+      } while (!(option == "1" || option == "2"));
+    }
+
     if (type == 1) {
       listOfVideoGames[indexForItem].SetNumberOfCopies(isLendingItem);
       listOfUsers[indexForUser].AddRental(
@@ -531,6 +545,16 @@ void Shop::RentItem(int type) {
     cout << listOfUsers[indexForUser].GetName() +
                 " successfully borrowed an item:"
          << endl;
+    if (option == "1") {
+      bool usePointToBorrow = true;
+      listOfUsers[indexForUser].UpdateRewardPointForVIP(usePointToBorrow);
+      cout << "Use 100 point for this borrowing" << endl;
+    }
+    if (listOfUsers[indexForUser].GetRole() == "VIP") {
+      listOfUsers[indexForUser].UpdateRewardPointForVIP();
+      cout << "Gain 10 points from borrowing item(Current point: "
+           << listOfUsers[indexForUser].GetRewardPointForVIP() << ")" << endl;
+    }
   }
 }
 
@@ -686,6 +710,82 @@ void Shop::SearchForUser(int type) {
     }
     if (count == 0)
       cout << "Can not find user that match the description" << endl;
+  }
+}
+
+void Shop::PromoteAUser(int type) {
+  vector<User> listOfGuestToRegular;
+  vector<User> listOfRegularToVIP;
+  if (!IsUserListEmpty()) {
+    for (size_t i = 0; i < listOfUsers.size(); i++) {
+      if (listOfUsers[i].GetNumberOfItemReturned() >= 3 &&
+          listOfUsers[i].GetRole() == "Guest")
+        listOfGuestToRegular.push_back(listOfUsers[i]);
+      if (listOfUsers[i].GetNumberOfItemReturned() >= 6 &&
+          listOfUsers[i].GetRole() == "Regular")
+        listOfRegularToVIP.push_back(listOfUsers[i]);
+    }
+  }
+  if (listOfGuestToRegular.size() == 0 && listOfRegularToVIP.size() == 0) {
+    cout << "No available users to promote" << endl;
+    return;
+  }
+  if (type == 1) {
+    if (listOfGuestToRegular.size() > 0) {
+      string position;
+      cout << "List of customers to promote to Regular role: " << endl;
+      for (size_t i = 0; i < listOfGuestToRegular.size(); i++) {
+        DisplayUserInfo(listOfGuestToRegular[i], i + 1);
+      }
+      do {
+        cout << "Select a user to promote: ";
+        cin >> position;
+        if (isNumber(position)) {
+          if (!(stoi(position) >= 1 &&
+                stoi(position) <= listOfGuestToRegular.size()))
+            cout << "Invalid option. Try again" << endl;
+        } else {
+          cout << "Invalid option. Try again" << endl;
+          position = "0";
+        }
+      } while (!(stoi(position) >= 1 &&
+                 stoi(position) <= listOfGuestToRegular.size()));
+      User* u = FindUserById(listOfGuestToRegular[stoi(position) - 1].GetId());
+      u->SetRole("Regular");
+      cout << "Successfully promote " << u->GetName() << " to Regular role"
+           << endl;
+    } else {
+      cout << "No customer to promote to Regular role" << endl;
+      return;
+    }
+  }
+  if (type == 2) {
+    if (listOfRegularToVIP.size() > 0) {
+      string position;
+      cout << "List of customers to promote to VIP role: " << endl;
+      for (size_t i = 0; i < listOfRegularToVIP.size(); i++) {
+        DisplayUserInfo(listOfRegularToVIP[i], i + 1);
+      }
+      do {
+        cout << "Select a user to promote: ";
+        cin >> position;
+        if (isNumber(position)) {
+          if (!(stoi(position) >= 1 &&
+                stoi(position) <= listOfRegularToVIP.size()))
+            cout << "Invalid option. Try again" << endl;
+        } else {
+          cout << "Invalid option. Try again" << endl;
+          position = "0";
+        }
+      } while (!(stoi(position) >= 1 &&
+                 stoi(position) <= listOfRegularToVIP.size()));
+      User* u = FindUserById(listOfRegularToVIP[stoi(position) - 1].GetId());
+      u->SetRole("VIP");
+      cout << "Successfully promote " << u->GetName() << " to VIP role" << endl;
+    } else {
+      cout << "No customers to promote to VIP role" << endl;
+      return;
+    }
   }
 }
 
