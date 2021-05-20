@@ -28,7 +28,7 @@ class Item {
   void SetRentalType(int type);
   void SetLoanType();
   void SetNumberOfCopies();
-  void SetNumberOfCopies(bool isLendingTo);
+  void updateValueAfterRenting();
   void updateValueAfterReturning();
   void SetRentalFee();
   void SetRentalStatus();

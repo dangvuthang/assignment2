@@ -6,5 +6,6 @@ class Menu {
   static void DisplayCRUDForUser();
   static void DisplaySearchMenu();
   static int DisplayTypeOfItem();
+  static int DisplayTypeOfUser();
   static int DisplayTypeOfSearch();
 };

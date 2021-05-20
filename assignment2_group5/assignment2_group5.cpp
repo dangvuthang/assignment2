@@ -12,14 +12,17 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-
-  if (argc != 3) {
+    /*
+    if (argc != 3) {
     cout << "To run: <program> <item csv file path> <customer csv file path>" << endl;
     exit(0);
   }
 
   string itemFile = argv[1];
   string customerFile = argv[2];
+    */
+    string itemFile = "item.csv";
+    string customerFile = "customer.csv";
   string option;
   Shop shop;
 
@@ -50,19 +53,27 @@ int main(int argc, char *argv[]) {
         }
       } while (optionForItem != "4");
     } else if (option == "2") {
-      string optionForUser;
-      do {
-        Menu::DisplayCRUDForUser();
-        cout << "Enter option: ";
-        cin >> optionForUser;
-        if (optionForUser == "1") {
-          shop.AddUser();
-        } else if (optionForUser == "2") {
-          shop.UpdateUser();
-        }
-      } while (optionForUser != "3");
+        string optionForUser;
+        do {
+            Menu::DisplayCRUDForUser();
+            cout << "Enter option: ";
+            cin >> optionForUser;
+            if (optionForUser == "1") {
+                shop.AddUser();
+            }
+            else if (optionForUser == "2") {
+                int type = Menu::DisplayTypeOfUser();
+                shop.UpdateUser(type);
+            }
+            else if (optionForUser == "3") {
+                int type = Menu::DisplayTypeOfUser();
+                shop.DeleteUser(type);
+            }
+        } while (optionForUser != "4");
+    } else if (option == "3") {
+        shop.PromoteUser();
     } else if (option == "4") {
-      int type = Menu::DisplayTypeOfItem();
+      int type = Menu::DisplayTypeOfUser();
       shop.RentItem(type);
     } else if (option == "5") {
       shop.ReturnItem();
@@ -85,7 +96,8 @@ int main(int argc, char *argv[]) {
         if (optionForSearch == "1" || optionForSearch == "2") {
           int typeOfSearch = Menu::DisplayTypeOfSearch();
           if (optionForSearch == "1") shop.SearchForItem(typeOfSearch);
-          if (optionForSearch == "2") shop.SearchForUser(typeOfSearch);
+          int userType = Menu::DisplayTypeOfUser();
+          if (optionForSearch == "2") shop.SearchForUser(typeOfSearch, userType);
         }
       } while (optionForSearch != "3");
     }

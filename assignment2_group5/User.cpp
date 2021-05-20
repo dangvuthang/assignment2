@@ -6,14 +6,22 @@
 using namespace std;
 
 User::User() { this->numberOfItemReturned = 0; }
-User::User(string id, string name, string address, string phone, string role, int numberOfItemReturned, vector<string> listOfRentals) {
+User::User(string id, string name, string address, string phone, string role) {
   this->id = id;
   this->name = name;
   this->address = address;
   this->phone = phone;
   this->role = role;
-  this->numberOfItemReturned = numberOfItemReturned;
-  this->listOfRentals = listOfRentals;
+  this->numberOfItemReturned = 0;
+}
+User::User(string id, string name, string address, string phone, string role, int numberOfItemReturned, vector<string> listOfRentals) {
+    this->id = id;
+    this->name = name;
+    this->address = address;
+    this->phone = phone;
+    this->role = role;
+    this->numberOfItemReturned = 0;
+    this->listOfRentals = listOfRentals;
 }
 string User::GetId() { return id; }
 string User::GetName() { return name; }
@@ -45,19 +53,15 @@ void User::SetPhone() {
   cout << "Phone: ";
   cin >> this->phone;
 }
-void User::SetRole() {
-  string input;
-  do {
-    cout << "Select user's account type: (1. Guest, 2. Regular, 3. VIP): ";
-    cin >> input;
-    if (!(input == "1" || input == "2" || input == "3"))
-      cout << "Invalid option. Try again" << endl;
-  } while (!(input == "1" || input == "2" || input == "3"));
-  if (input == "1") this->role = "Guest";
-  if (input == "2") this->role = "Regular";
-  if (input == "3") this->role = "VIP";
+void User::SetRole(bool newUser) {
+    if (newUser == true) {
+        this->role = "Guest";
+    }
+    else {
+        this->role = "Regular";
+        numberOfItemReturned = 0;
+    }
 }
-void User::SetRole(string role) { this->role = role; }
 
 void User::AddRental(string itemId) { this->listOfRentals.push_back(itemId); }
 

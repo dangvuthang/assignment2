@@ -15,7 +15,8 @@ class User {
 
  public:
   User();
-  User(string id, string name, string address, string phone, string role, int numberOfItemReturned, vector<string> GetListOfRentals);
+  User(string id, string name, string address, string phone, string role);
+  User(string id, string name, string address, string phone, string role, int numberOfItemReturned, vector<string> listOfRentals);
   string GetId();
   string GetName();
   string GetAddress();
@@ -28,7 +29,7 @@ class User {
   void SetAddress();
   void SetPhone();
   void SetRole();
-  void SetRole(string role);
+  void SetRole(bool newUser);
   string ReturnRental(int index);
   void AddRental(string itemId);
   static bool CheckId(string input);

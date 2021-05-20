@@ -2,10 +2,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
 #include "Item.h"
 #include "SpecialItem.h"
 #include "User.h"
+#include "SpecialUser.h"
 using namespace std;
 class Shop {
  private:
@@ -13,14 +13,14 @@ class Shop {
   vector<SpecialItem> listOfDVDs;
   vector<SpecialItem> listOfRecords;
   vector<User> listOfUsers;
+  vector<SpecialUser> listOfSpecialUsers;
   void DisplayItemInfo(Item item, int position);
   void DisplayItemInfo(SpecialItem specialItem, int position);
   bool IsItemListEmpty();
   bool IsItemListEmpty(int type);
   void DisplayUserInfo(User user, int position);
-  bool IsUserListEmpty();
-  bool CheckIfUserCanBorrowItem(int itemType, int indexForItem,
-                                int indexForUser);
+  void DisplayUserInfo(SpecialUser vip, int position);
+  bool IsUserListEmpty(int type);
 
  public:
   Shop();
@@ -32,17 +32,21 @@ class Shop {
   void DeleteItem(int type);
   void AddUser();
   void ShowAllUsers();
-  void ShowAllUsers(int type);
-  void UpdateUser();
+  int ShowAllUsers(int type);
+  void UpdateUser(int type);
+  void DeleteUser(int type);
+  void PromoteUser();
   int GetItemIndex(int type);
   int GetItemIndex(int type, bool onlyAvailableItem);
-  int GetUserIndex();
-  void RentItem(int type);
+  int GetUserIndex(int type);
+  int GetUserIndex(bool specialUser);
+  void RentItem(int userType);
   void ReturnItem();
   void SearchForItem(int type);
-  void SearchForUser(int type);
+  void SearchForUser(int searchType, int userType);
   Item* FindItemById(string itemId);
   User* FindUserById(string userId);
+  SpecialUser* FindSpecialUserById(string itemId);
   void saveItem(string itemFile);
   void saveUser(string userFile);
   void loadItem(string itemFile);

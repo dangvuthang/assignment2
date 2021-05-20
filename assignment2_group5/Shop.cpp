@@ -1,9 +1,11 @@
 #include "Shop.h"
-
+#include "Menu.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
+
+
 using namespace std;
 
 Shop::Shop() {}
@@ -263,7 +265,6 @@ int Shop::GetItemIndex(int type, bool onlyAvailableItem) {
       do {
         cout << "Select an item's number: ";
         cin >> index;
-        cin >> index;
         if (isNumber(index)) {
           if (!(stoi(index) >= 1 && stoi(index) <= count))
             cout << "Invalid option. Try again" << endl;
@@ -290,7 +291,6 @@ int Shop::GetItemIndex(int type, bool onlyAvailableItem) {
       }
       do {
         cout << "Select an item's number: ";
-        cin >> index;
         cin >> index;
         if (isNumber(index)) {
           if (!(stoi(index) >= 1 && stoi(index) <= count))
@@ -349,189 +349,288 @@ void Shop::DisplayUserInfo(User user, int position) {
        << ", Address: " << user.GetAddress() << ", Phone: " << user.GetPhone()
        << ", Role: " << user.GetRole() << endl;
 }
-
-bool Shop::IsUserListEmpty() {
-  if (listOfUsers.size() == 0) {
-    cout << "No users available" << endl;
-    return true;
-  }
-  return false;
+void Shop::DisplayUserInfo(SpecialUser vip, int position) {
+    cout << position << ". ID: " << vip.GetId() << ", Name: " << vip.GetName()
+        << ", Address: " << vip.GetAddress() << ", Phone: " << vip.GetPhone()
+        << ", Role: " << vip.GetRole() << ", Reward Points: " << vip.GetRewardPoint() << endl;
+}
+bool Shop::IsUserListEmpty(int type) {
+    if (type == 3) {
+        if (listOfSpecialUsers.size() == 0) {
+            cout << "No Special User available" << endl;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    else if (type == 2 || type == 1) {
+        if (listOfUsers.size() == 0) {
+            cout << "No users available" << endl;
+            return true;
+        }
+        switch (type) {
+        case 2:
+            for (size_t i = 0; i < listOfUsers.size(); i++) {
+                if (listOfUsers[i].GetRole() == "Regular") {
+                    return false;
+                }
+                else {
+                    cout << "No Regular users available" << endl;
+                    return true;
+                }
+            }
+            break;
+        case 1:
+            for (size_t i = 0; i < listOfUsers.size(); i++) {
+                if (listOfUsers[i].GetRole() == "Guest") {
+                    return false;
+                }
+                else {
+                    cout << "No Guest users available" << endl;
+                    return true;
+                }
+            }
+            break;
+        }
+    }
+    return false;
 }
 
 void Shop::AddUser() {
+    bool newUser = true;
   User user;
   user.SetId();
   user.SetName();
   user.SetAddress();
   user.SetPhone();
-  user.SetRole();
+  user.SetRole(true);
   listOfUsers.push_back(user);
 }
 
 void Shop::ShowAllUsers() {
-  if (!IsUserListEmpty()) {
-    for (size_t i = 0; i < listOfUsers.size(); i++) {
-      DisplayUserInfo(listOfUsers[i], i + 1);
-      for (string i : listOfUsers[i].GetListOfRentals()) {
-        cout << i << endl;
-      }
+    ShowAllUsers(1);
+    ShowAllUsers(2);
+    ShowAllUsers(3);
+}
+int Shop::ShowAllUsers(int type) {
+    string role;
+    int count = 0;
+    switch (type) {
+    case 1:
+        role = "Guest";
+        cout << "Guest Role: " << endl;
+        break;
+    case 2:
+        role = "Regular";
+        cout << "Regular Role: " << endl;
+        break;
+    case 3:
+        role = "VIP";
+        cout << "VIP Role: " << endl;
+        break;
     }
-  }
+    if (type == 1 || type == 2) {
+        for (size_t i = 0; i < listOfUsers.size(); i++) {
+            if (listOfUsers[i].GetRole() == role) {
+                count++;
+                DisplayUserInfo(listOfUsers[i], count);
+            }
+        }
+    }
+    if (type == 3) {
+        for (size_t i = 0; i < listOfSpecialUsers.size(); i++) {
+            count++;
+            DisplayUserInfo(listOfSpecialUsers[i], count);
+        }
+    }
+    if (count == 0) cout << "No " << role << " users with is available" << endl;
+    return count;
 }
+int Shop::GetUserIndex(int type) {
+    int index = 0;
+    bool specialUser{};
+    if (type == 1 || type == 2) {
+        specialUser = false;
+    }
+    else if (type == 3) {
+        specialUser = true;
+    }
+    if (!IsUserListEmpty(type)) {
+        int userCount = ShowAllUsers(type);
+        if (specialUser == false) {
+            do {
+                cout << "Select a user: ";
+                cin >> index;
+                if (!(index >= 1 && index <= userCount)) {
+                    cout << "Invalid option. Try again" << endl;
+                }
+            } while (!(index >= 1 && index <= userCount));
+        }
+        else if (specialUser == true) {
+            do {
+                cout << "Select a Special user: ";
+                cin >> index;
+                if (!(index >= 1 && index <= listOfSpecialUsers.size())) {
+                    cout << "Invalid option. Try again" << endl;
+                }
+            } while (!(index >= 1 && index <= listOfSpecialUsers.size()));
 
-int Shop::GetUserIndex() {
-  string index = "0";
-  if (!IsUserListEmpty()) {
-    do {
-      ShowAllUsers();
-      cout << "Select a user: ";
-      cin >> index;
-      if (isNumber(index)) {
-        if (!(stoi(index) >= 1 && stoi(index) <= listOfUsers.size()))
-          cout << "Invalid option. Try again" << endl;
-      } else {
-        cout << "Invalid option. Try again" << endl;
-        index = "0";
-      }
-
-    } while (!(stoi(index) >= 1 && stoi(index) <= listOfUsers.size()));
-  }
-  return stoi(index) - 1;
+        }
+    }
+    return index - 1;
 }
-
-void Shop::UpdateUser() {
-  int index = GetUserIndex();
+int Shop::GetUserIndex(bool specialUser) {
+    int index = 0;
+    int count = 0;
+    vector<int> position;
+    if (listOfUsers.size() != 0 && specialUser == false) {
+        for (size_t i = 0; i < listOfUsers.size(); i++) {
+            if (listOfUsers[i].GetNumberOfItemReturned() >= 3) {
+                position.push_back(i);
+                count++;
+                DisplayUserInfo(listOfUsers[i], count);
+            }
+        }
+        if (count == 0) {
+            cout << "No user eligible for promotion";
+            return -1;
+        }
+        do {
+            cout << "Select an user to Promote: ";
+            cin >> index;
+            if (!(index >= 1 && index <= count))
+                cout << "Invalid option. Try again" << endl;
+        } while (!(index >= 1 && index <= count));
+    }
+    return count != 0 ? position[index - 1] : -1;
+}
+void Shop::UpdateUser(int type) {
+  int index = GetUserIndex(type);
   if (index == -1) return;
   listOfUsers[index].SetName();
   listOfUsers[index].SetAddress();
   listOfUsers[index].SetPhone();
 }
-
-void Shop::ShowAllUsers(int type) {
-  string role;
-  int count = 0;
-  if (type == 1) {
-    role = "Guest";
-    cout << "Guest Role: " << endl;
-  }
-  if (type == 2) {
-    role = "Regular";
-    if (type == 2) cout << "Regular Role: " << endl;
-  }
-  if (type == 3) {
-    role = "VIP";
-    cout << "VIP Role: " << endl;
-  }
-  if (!IsUserListEmpty()) {
-    for (size_t i = 0; i < listOfUsers.size(); i++) {
-      if (listOfUsers[i].GetRole() == role)
-        cout << ++count << ". ID: " << listOfUsers[i].GetId()
-             << ", Name: " << listOfUsers[i].GetName()
-             << ", Address: " << listOfUsers[i].GetAddress()
-             << ", Phone: " << listOfUsers[i].GetPhone() << endl;
+void Shop::DeleteUser(int type) {
+    int index = GetUserIndex(type);
+    if (index == -1) return;
+    if (type == 1 || type == 2) {
+        for (size_t i = 0; i < listOfUsers[index].GetListOfRentals().size(); i++) {
+            string returnItemId = listOfUsers[index].GetListOfRentals()[i];
+            FindItemById(returnItemId)->updateValueAfterReturning();
+        }
     }
-  }
-  if (count == 0) cout << "No users with this role available" << endl;
+    else if (type == 3) {
+        for (size_t i = 0; i < listOfSpecialUsers[index].GetListOfRentals().size(); i++) {
+            string returnItemId = listOfSpecialUsers[index].GetListOfRentals()[i];
+            FindItemById(returnItemId)->updateValueAfterReturning();
+        }
+    }
+    listOfUsers.erase(listOfUsers.begin() + index);
 }
+void Shop::PromoteUser() {
+    bool specialUser = false;
+    bool newUser = false;
+    int index = GetUserIndex(specialUser);
+    if (index == -1) return;
+    if (listOfUsers[index].GetRole() == "Guest") {
+        listOfUsers[index].SetRole(newUser);
+    }
+    else if (listOfUsers[index].GetRole() == "Regular") {
+        SpecialUser vip(listOfUsers[index].GetId(), listOfUsers[index].GetName(), listOfUsers[index].GetAddress(), listOfUsers[index].GetPhone(), "VIP");
+        for (size_t i = 0; i < listOfUsers[index].GetListOfRentals().size(); i++) {
+            vip.GetListOfRentals().push_back(listOfUsers[index].GetListOfRentals()[i]);
+        }
 
-bool Shop::CheckIfUserCanBorrowItem(int itemType, int indexForItem,
-                                    int indexForUser) {
-  User currentUser = listOfUsers[indexForUser];
-  if (currentUser.GetListOfRentals().size() == 2 &&
-      currentUser.GetRole() == "Guest") {
-    cout << "Guest can only borrow maximum of 2 items at a time" << endl;
-    return false;
-  }
-
-  if (itemType == 1) {
-    Item videoGame = listOfVideoGames[indexForItem];
-    if (currentUser.GetRole() == "Guest" &&
-        videoGame.GetLoanType() == "2-day") {
-      cout << "Only Regular and VIP member "
-              "can borrow 2-day Video items"
-           << endl;
-      return false;
+        listOfSpecialUsers.push_back(vip);
+        listOfUsers.erase(listOfUsers.begin() + index);
     }
-    for (size_t i = 0; i < listOfUsers[indexForUser].GetListOfRentals().size();
-         i++) {
-      if (listOfUsers[indexForUser].GetListOfRentals()[i] ==
-          videoGame.GetId()) {
-        cout << videoGame.GetTitle()
-             << " is already borrowed. Only one item of this type can be "
-                "borrowed"
-             << endl;
-        return false;
-      }
-    }
-  }
-
-  if (itemType == 2) {
-    SpecialItem dvd = listOfDVDs[indexForItem];
-    if (currentUser.GetRole() == "Guest" && dvd.GetLoanType() == "2-day") {
-      cout << "Only Regular and VIP member "
-              "can borrow 2-day Video items"
-           << endl;
-      return false;
-    }
-    for (size_t i = 0; i < listOfUsers[indexForUser].GetListOfRentals().size();
-         i++) {
-      if (listOfUsers[indexForUser].GetListOfRentals()[i] == dvd.GetId()) {
-        cout << dvd.GetTitle()
-             << " is already borrowed. Only one item of this type can be "
-                "borrowed"
-             << endl;
-        return false;
-      }
-    }
-  }
-
-  if (itemType == 3) {
-    SpecialItem record = listOfRecords[indexForItem];
-    if (currentUser.GetRole() == "Guest" && record.GetLoanType() == "2-day") {
-      cout << "Only Regular and VIP member "
-              "can borrow 2-day Video items"
-           << endl;
-      return false;
-    }
-    for (size_t i = 0; i < listOfUsers[indexForUser].GetListOfRentals().size();
-         i++) {
-      if (listOfUsers[indexForUser].GetListOfRentals()[i] == record.GetId()) {
-        cout << record.GetTitle()
-             << " is already borrowed. Only one item of this type can be "
-                "borrowed"
-             << endl;
-        return false;
-      }
-    }
-  }
-
-  return true;
 }
-void Shop::RentItem(int type) {
+void Shop::RentItem(int userType) {
   bool onlyAvailableItem = true;
-  bool isLendingItem = true;
-  int indexForItem = GetItemIndex(type, onlyAvailableItem);
-  if (indexForItem == -1) return;
-  int indexForUser = GetUserIndex();
+  bool specialUser{};
+  int indexForUser = GetUserIndex(userType);
   if (indexForUser == -1) return;
-  if (CheckIfUserCanBorrowItem(type, indexForItem, indexForUser)) {
-    if (type == 1) {
-      listOfVideoGames[indexForItem].SetNumberOfCopies(isLendingItem);
-      listOfUsers[indexForUser].AddRental(
-          listOfVideoGames[indexForItem].GetId());
-    }
-    if (type == 2) {
-      listOfDVDs[indexForItem].SetNumberOfCopies(isLendingItem);
-      listOfUsers[indexForUser].AddRental(listOfDVDs[indexForItem].GetId());
-    }
-    if (type == 3) {
-      listOfRecords[indexForItem].SetNumberOfCopies(isLendingItem);
-      listOfUsers[indexForUser].AddRental(listOfRecords[indexForItem].GetId());
-    }
-    cout << listOfUsers[indexForUser].GetName() +
-                " successfully borrowed an item:"
-         << endl;
+  int itemType = Menu::DisplayTypeOfItem();
+  int indexForItem = GetItemIndex(itemType, onlyAvailableItem);
+  if (indexForItem == -1) return;
+  
+  if (userType == 1 || userType == 2) {
+      specialUser = false;
   }
+  else if (userType == 3) {
+      specialUser = true;
+  }
+  if (listOfUsers[indexForUser].GetRole() == "Guest") {
+      if (listOfUsers[indexForUser].GetListOfRentals().size() > 2) {
+          cout << "Guest member can only borrow a maximum of 2 items" << endl;
+          return;
+      }
+      switch (itemType) {
+      case 1:
+          if (listOfVideoGames[indexForItem].GetLoanType() == "2-day") {
+              cout << "Only Regular and VIP member can borrow 2-day Video Games" << endl;
+              return;
+          }
+          break;
+      case 2:
+          if (listOfDVDs[indexForItem].GetLoanType() == "2-day") {
+              cout << "Only Regular and VIP member can borrow 2-day DVDs" << endl;
+              return;
+          }
+          break;
+      case 3:
+          if (listOfRecords[indexForItem].GetLoanType() == "2-day") {
+              cout << "Only Regular and VIP member can borrow 2-day Movie Records" << endl;
+              return;
+          }
+          break;
+      }
+  }
+  if (specialUser == false) {
+      switch (itemType) {
+      case 1:
+          listOfUsers[indexForUser].AddRental(listOfVideoGames[indexForItem].GetId());
+          FindItemById(listOfVideoGames[indexForItem].GetId())->updateValueAfterRenting();
+          break;
+      case 2:
+          listOfUsers[indexForUser].AddRental(listOfDVDs[indexForItem].GetId());
+          FindItemById(listOfDVDs[indexForItem].GetId())->updateValueAfterRenting();
+          break;
+      case 3:
+          listOfUsers[indexForUser].AddRental(listOfRecords[indexForItem].GetId());
+          FindItemById(listOfRecords[indexForItem].GetId())->updateValueAfterRenting();
+          break;
+      }
+  }
+  else if (specialUser == true) {
+      switch (itemType) {
+      case 1:
+          listOfSpecialUsers[indexForUser].AddRental(listOfVideoGames[indexForItem].GetId());
+          FindItemById(listOfVideoGames[indexForItem].GetId())->updateValueAfterRenting();
+          break;
+      case 2:
+          listOfSpecialUsers[indexForUser].AddRental(listOfDVDs[indexForItem].GetId());
+          FindItemById(listOfDVDs[indexForItem].GetId())->updateValueAfterRenting();
+          break;
+      case 3:
+          listOfSpecialUsers[indexForUser].AddRental(listOfRecords[indexForItem].GetId());
+          FindItemById(listOfRecords[indexForItem].GetId())->updateValueAfterRenting();
+          break;
+      }
+      listOfSpecialUsers[indexForItem].AddPointOnRent();
+      int option = 0;
+      cout << "Would you like to use reward points to rent item ?" << endl;
+      cout << "1. YES " << endl;
+      cout << "2. NO " << endl;
+      cout << "Enter your opton: ";
+      cin >> option;
+      if (option == 1) {
+          listOfSpecialUsers[indexForUser].UsePointForRent();
+      }
+  }
+  
 }
 
 Item* Shop::FindItemById(string itemId) {
@@ -561,59 +660,110 @@ User* Shop::FindUserById(string itemId) {
   }
   return NULL;
 }
-
+SpecialUser* Shop::FindSpecialUserById(string itemId) {
+    for (size_t i = 0; i < listOfSpecialUsers.size(); i++) {
+        if (listOfSpecialUsers[i].GetId() == itemId) {
+            return &listOfSpecialUsers[i];
+        }
+    }
+    return NULL;
+}
 void Shop::ReturnItem() {
-  int count = 0;
-  string indexForUser;
-  string indexForItem;
-  vector<int> position;
-  for (size_t i = 0; i < listOfUsers.size(); i++) {
-    if (listOfUsers[i].GetListOfRentals().size() > 0) {
-      DisplayUserInfo(listOfUsers[i], ++count);
-    }
-  }
-  if (count == 0) {
-    cout << "There is no user that borrow the item from the shop" << endl;
-    return;
-  }
-  do {
-    cout << "Select a user: ";
-    cin >> indexForUser;
-    if (isNumber(indexForUser)) {
-      if (!(stoi(indexForUser) >= 1 && stoi(indexForUser) <= count))
-        cout << "Invalid option. Try again" << endl;
-    } else {
-      cout << "Invalid option. Try again" << endl;
-      indexForUser = "0";
-    }
+    int count = 0, indexForUser, indexForItem;
+    string  indexSelectUser, indexSelectItem;
+    vector<int> positionUser;
+    int userType = Menu::DisplayTypeOfUser();
 
-  } while (!(stoi(indexForUser) >= 1 && stoi(indexForUser) <= count));
-  User u = listOfUsers[stoi(indexForUser) - 1];
-
-  for (size_t i = 0; i < u.GetListOfRentals().size(); i++) {
-    Item* item = FindItemById(u.GetListOfRentals()[i]);
-    cout << i + 1 << ". ID: " << item->GetId()
-         << ", Title: " << item->GetTitle() << endl;
-  }
-  do {
-    cout << "Select an item to return: ";
-    cin >> indexForItem;
-    if (isNumber(indexForItem)) {
-      if (!(stoi(indexForItem) >= 1 &&
-            stoi(indexForItem) <= u.GetListOfRentals().size()))
-        cout << "Invalid option. Try again" << endl;
-    } else {
-      cout << "Invalid option. Try again" << endl;
-      indexForItem = "0";
+    if (userType == 1 || userType == 2) {
+        for (size_t i = 0; i < listOfUsers.size(); i++) {
+            if (listOfUsers[i].GetListOfRentals().size() > 0) {
+                count++;
+                DisplayUserInfo(listOfUsers[i], count);
+                positionUser.push_back(i);
+            }
+        }
+        if (count == 0) {
+            cout << "There is no user that borrow the item from the shop" << endl;
+            return;
+        }
+        do {
+            cout << "Select a user: ";
+            cin >> indexSelectUser;
+            if (isNumber(indexSelectUser)) {
+                if (!(stoi(indexSelectUser) >= 1 && stoi(indexSelectUser) <= count))
+                    cout << "Invalid option. Try again" << endl;
+            }
+            else {
+                cout << "Invalid option. Try again" << endl;
+                indexSelectUser = "0";
+            }
+        } while (!(stoi(indexSelectUser) >= 1 && stoi(indexSelectUser) <= count));
+        int userIndexNum = stoi(indexSelectUser);
+        userIndexNum--;
+        indexForUser = positionUser[userIndexNum];
+        User u = listOfUsers[indexForUser];
+        for (size_t i = 0; i < u.GetListOfRentals().size(); i++) {
+            Item* item = FindItemById(u.GetListOfRentals()[i]);
+            cout << i + 1 << ". ID: " << item->GetId() << ", Title: " << item->GetTitle() << endl;
+        }
+        do {
+            cout << "Select an item to return: ";
+            cin >> indexSelectItem;
+            if (!(stoi(indexSelectItem) >= 1 && stoi(indexSelectItem) <= u.GetListOfRentals().size()))
+                cout << "Invalid option. Try again" << endl;
+        } while (!(stoi(indexSelectItem) >= 1 && stoi(indexSelectItem) <= u.GetListOfRentals().size()));
+        indexForItem = stoi(indexSelectItem);
+        indexForItem--;
+        string chosenReturnedItemId = u.GetListOfRentals()[indexForItem];
+        listOfUsers[indexForUser].ReturnRental(indexForItem);
+        FindItemById(chosenReturnedItemId)->updateValueAfterReturning();
+        cout << u.GetName() << " successfully return an item" << endl;
     }
-
-  } while (!(stoi(indexForItem) >= 1 &&
-             stoi(indexForItem) <= u.GetListOfRentals().size()));
-  string chosenReturnedItemId =
-      listOfUsers[stoi(indexForUser) - 1].ReturnRental(stoi(indexForItem) - 1);
-  FindItemById(chosenReturnedItemId)->updateValueAfterReturning();
-  cout << listOfUsers[stoi(indexForUser) - 1].GetName()
-       << " successfully return an item" << endl;
+    else if (userType == 3) {
+        for (size_t i = 0; i < listOfSpecialUsers.size(); i++) {
+            if (listOfSpecialUsers[i].GetListOfRentals().size() > 0) {
+                count++;
+                DisplayUserInfo(listOfSpecialUsers[i], count);
+                positionUser.push_back(i);
+            }
+        }
+        if (count == 0) {
+            cout << "There is no Special user that borrow the item from the shop" << endl;
+            return;
+        }
+        do {
+            cout << "Select a user: ";
+            cin >> indexSelectUser;
+            if (isNumber(indexSelectUser)) {
+                if (!(stoi(indexSelectUser) >= 1 && stoi(indexSelectUser) <= count))
+                    cout << "Invalid option. Try again" << endl;
+            }
+            else {
+                cout << "Invalid option. Try again" << endl;
+                indexSelectUser = "0";
+            }
+        } while (!(stoi(indexSelectUser) >= 1 && stoi(indexSelectUser) <= count));
+        int userIndexNum = stoi(indexSelectUser);
+        userIndexNum--;
+        indexForUser = positionUser[userIndexNum];
+        SpecialUser vip = listOfSpecialUsers[indexForUser];
+        for (size_t i = 0; i < vip.GetListOfRentals().size(); i++) {
+            Item* item = FindItemById(vip.GetListOfRentals()[i]);
+            cout << i + 1 << ". ID: " << item->GetId() << ", Title: " << item->GetTitle() << endl;
+        }
+        do {
+            cout << "Select an item to return: ";
+            cin >> indexSelectItem;
+            if (!(stoi(indexSelectItem) >= 1 && stoi(indexSelectItem) <= vip.GetListOfRentals().size()))
+                cout << "Invalid option. Try again" << endl;
+        } while (!(stoi(indexSelectItem) >= 1 && stoi(indexSelectItem) <= vip.GetListOfRentals().size()));
+        indexForItem = stoi(indexSelectItem);
+        indexForItem--;
+        string chosenReturnedItemId = vip.GetListOfRentals()[indexForItem];
+        vip.ReturnRental(indexForItem);
+        FindItemById(chosenReturnedItemId)->updateValueAfterReturning();
+        cout << vip.GetName() << " successfully return an item" << endl;
+    }
 }
 
 void Shop::SearchForItem(int type) {
@@ -658,35 +808,49 @@ void Shop::SearchForItem(int type) {
   }
 }
 
-void Shop::SearchForUser(int type) {
-  if (type == 1) {
-    string input;
-    do {
-      cout << "Id (Format: Cxxx (x is a number)): ";
-      cin >> input;
-      if (!User::CheckId(input))
-        cout << "Invalid format. Format: Cxxx (x is a number). Try again"
-             << endl;
-    } while (!User::CheckId(input));
-    User* u = FindUserById(input);
-    if (!u)
-      cout << "Can not find user that match the description" << endl;
-    else
-      DisplayUserInfo(*u, 1);
-  } else if (type == 2) {
-    int count = 0;
-    string username;
-    cin.ignore();
-    cout << "User's name: ";
-    getline(cin, username);
-    for (size_t i = 0; i < listOfUsers.size(); i++) {
-      if (listOfUsers[i].GetName() == username) {
-        DisplayUserInfo(listOfUsers[i], ++count);
-      }
+void Shop::SearchForUser(int searchType, int userType) {
+    if (searchType == 1) {
+        string input;
+        do {
+            cout << "Id (Format: Cxxx (x is a number)): ";
+            cin >> input;
+            if (!User::CheckId(input))
+                cout << "Invalid format. Format: Cxxx (x is a number). Try again"
+                << endl;
+        } while (!User::CheckId(input));
+        if (userType == 1 || userType == 2) {
+            User* u = FindUserById(input);
+            if (!u) {
+                cout << "Can not find user that match the description" << endl;
+            }
+            else {
+                DisplayUserInfo(*u, 1);
+            }
+        }
+        else if (userType == 3) {
+            SpecialUser* vip = FindSpecialUserById(input);
+            if (!vip) {
+                cout << "Can not find Special user that match the description" << endl;
+            }
+            else {
+                DisplayUserInfo(*vip, 1);
+            }
+        }
     }
-    if (count == 0)
-      cout << "Can not find user that match the description" << endl;
-  }
+    else if (searchType == 2) {
+        int count = 0;
+        string username;
+        cin.ignore();
+        cout << "User's name: ";
+        getline(cin, username);
+        for (size_t i = 0; i < listOfUsers.size(); i++) {
+            if (listOfUsers[i].GetName() == username) {
+                DisplayUserInfo(listOfUsers[i], ++count);
+            }
+        }
+        if (count == 0)
+            cout << "Can not find user that match the description" << endl;
+    }
 }
 
 void Shop::saveItem(string itemFile) {
@@ -822,9 +986,17 @@ void Shop::loadUser(string userFile) {
         listOfRentals.push_back(substr);
       }
     }
-
-    this->listOfUsers.push_back(
+    if (resultLine[4] == "Guest" || resultLine[4] == "Regular") {
+        this->listOfUsers.push_back(
         User(resultLine[0], resultLine[1], resultLine[2], resultLine[3],
              resultLine[4], stoi(resultLine[5]), listOfRentals));
+    }
+    else if (resultLine[4] == "VIP"){
+        this->listOfSpecialUsers.push_back(
+            SpecialUser(resultLine[0], resultLine[1], resultLine[2], resultLine[3],
+                resultLine[4], stoi(resultLine[5]), listOfRentals));
+    }
+    
+    
   }
 }

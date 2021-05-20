@@ -58,7 +58,17 @@ int Menu::DisplayTypeOfItem() {
   } while (!(type == "1" || type == "2" || type == "3"));
   return stoi(type);
 }
-
+int Menu::DisplayTypeOfUser() {
+    string type;
+    do {
+        cout << "Select the type of User: (1. Guest, 2. Regular, 3. VIP): ";
+        cin >> type;
+        if (!(type == "1" || type == "2" || type == "3")) {
+            cout << "Invalid option. Try again" << endl;
+        }
+    } while (!(type == "1" || type == "2" || type == "3"));
+    return stoi(type);
+}
 int Menu::DisplayTypeOfSearch() {
   string type;
   do {
