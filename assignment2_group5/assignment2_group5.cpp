@@ -26,6 +26,7 @@ int main(int argc, char *argv[]) {
   cout << "Loading data..." << endl;
   shop.loadItem(itemFile);
   shop.loadUser(customerFile);
+  shop.UpdateID();
   cout << "Done." << endl;
 
   do {
