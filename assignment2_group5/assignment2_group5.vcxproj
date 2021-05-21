@@ -156,6 +156,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Shop.cpp" />
     <ClCompile Include="SpecialItem.cpp" />
+    <ClCompile Include="SpecialUser.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,11 +164,12 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Shop.h" />
     <ClInclude Include="SpecialItem.h" />
+    <ClInclude Include="SpecialUser.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\EEET2482 Software Engineering Design\Assignment 2\items.txt" />
     <Text Include="customers.txt" />
+    <Text Include="items.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,9 +3,9 @@
 SpecialUser::SpecialUser(string id, string name, string address, string phone, string role) : User(id, name, address, phone, role) {
     this->rewardPoint = 0;
 }
-SpecialUser::SpecialUser(string id, string name, string address, string phone, string role, int numberOfItemReturned, vector<string> listOfRental) 
+SpecialUser::SpecialUser(string id, string name, string address, string phone, string role, int numberOfItemReturned, vector<string> listOfRental, int rewardPoint)
     : User(id, name, address, phone, role, numberOfItemReturned, listOfRental) {
-    this->rewardPoint = 0;
+    this->rewardPoint = rewardPoint;
 }
 SpecialUser::SpecialUser() {}
 

@@ -6,29 +6,17 @@
 
 #include "Item.h"
 using namespace std;
-SpecialItem::SpecialItem(string id, string title, eRentalType rentalType, string loanType, int numberOfCopies, float rentalFee, eGenre genre)
+SpecialItem::SpecialItem(string id, string title, string rentalType, string loanType, int numberOfCopies, int availableCopies, float rentalFee, string rentalStatus, string genre)
+    : Item(id, title, rentalType, loanType, numberOfCopies, availableCopies, rentalFee, rentalStatus) {
+    this->genre = genre;
+}
+SpecialItem::SpecialItem(string id, string title, string rentalType, string loanType, int numberOfCopies, float rentalFee, string genre)
     : Item(id, title, rentalType, loanType, numberOfCopies, rentalFee) {
     this->genre = genre;
 }
-eGenre SpecialItem::GetGenre() { return this->genre; }
-string SpecialItem::GetGenreString() {
-    string genreString = "";
-    switch (genre) {
-    case 1:
-        genreString = "Action";
-        break;
-    case 2:
-        genreString = "Horror";
-        break;
-    case 3:
-        genreString = "Drama";
-        break;
-    case 4:
-        genreString = "Comedy";
-        break;
-    }
-    return genreString;
-}
+SpecialItem::SpecialItem() : Item() {}
+
+string SpecialItem::GetGenre() { return genre; }
 void SpecialItem::SetGenre() {
     string input;
     do {
@@ -37,21 +25,19 @@ void SpecialItem::SetGenre() {
         if (!(input == "1" || input == "2" || input == "3" || input == "4"))
             cout << "Invalid option. Try again" << endl;
     } while (!(input == "1" || input == "2" || input == "3" || input == "4"));
-    if (input == "1") this->genre = action;
-    if (input == "2") this->genre = horror;
-    if (input == "3") this->genre = drama;
-    if (input == "4") this->genre = comedy;
+    if (input == "1") this->genre = "Action";
+    if (input == "2") this->genre = "Horror";
+    if (input == "3") this->genre = "Drama";
+    if (input == "4") this->genre = "Comedy";
 }
-
-SpecialItem::SpecialItem() : Item() {}
-
 string SpecialItem::ToString() {
     stringstream ss;
     ss << GetRentalFee();
-
-    string result = this->GetId() + "," + this->GetTitle() + "," +
-        this->GetRentalTypeString() + "," + this->GetLoanType() + "," +
-        to_string(this->GetNumberOfCopies()) + "," + ss.str() +
-        this->GetRentalStatusString() + GetGenreString();
+    string result = this->GetId()
+      + "," + this->GetTitle()
+      + "," +this->GetRentalType()
+      + "," + this->GetLoanType()
+      + "," +to_string(this->GetNumberOfCopies())
+      + "," + ss.str() +this->GetRentalStatus() + genre;
     return result;
 }

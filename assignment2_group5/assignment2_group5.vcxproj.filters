@@ -33,6 +33,9 @@
     <ClCompile Include="Shop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpecialUser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -50,12 +53,15 @@
     <ClInclude Include="Shop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SpecialUser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="customers.txt">
       <Filter>Source Files</Filter>
     </Text>
-    <Text Include="..\..\..\EEET2482 Software Engineering Design\Assignment 2\items.txt">
+    <Text Include="items.txt">
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>

@@ -2,44 +2,40 @@
 #include <iostream>
 #include <string>
 using namespace std;
-
-enum eRentalType { game = 1, dvd = 2, record = 3 };
 class Item {
-private:
+    private:
     string id;
     string title;
-    eRentalType rentalType;
+    string rentalType;
     string loanType;
     int numberOfCopies;
     int availableCopies;
     float rentalFee;
-    bool rentalStatus;
+    string rentalStatus;
 
-public:
-    Item(string id, string title, eRentalType rentalType, string loanType,
-        int numberOfCopies, float rentalFee);
+    public:
+    Item(string id, string title, string rentalType, string loanType, int numberOfCopies, int availableCopies, float rentalFee, string rentalStatus);
+    Item(string id, string title, string rentalType, string loanType, int numberOfCopies, float rentalFee);
     Item();
+    bool isNumber(string input);
     string GetId();
     string GetTitle();
-    eRentalType GetRentalType();
-    string GetRentalTypeString();
+    string GetRentalType();
     string GetLoanType();
     int GetNumberOfCopies();
     int GetAvailableCopies();
     float GetRentalFee();
-    bool GetRentalStatus();
-    string GetRentalStatusString();
+    string GetRentalStatus();
     void SetId();
     void SetTitle();
-    void SetRentalType(eRentalType type);
+    void SetRentalType(int type);
     void SetLoanType();
-    void SetNumberOfCopies(bool firstTimeCopies);
+    void SetNumberOfCopies(bool newItem);
     void SetAvailableCopies(bool isLendingTo);
+    void updateValueAfterRenting();
     void updateValueAfterReturning();
     void SetRentalFee();
     void SetRentalStatus();
     string ToString();
     static bool CheckId(string input);
-    virtual string GetGenreString();
-    virtual void SetGenre();
 };

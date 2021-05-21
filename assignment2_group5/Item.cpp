@@ -5,7 +5,17 @@
 #include <string>
 using namespace std;
 
-Item::Item(string id, string title, eRentalType rentalType, string loanType, int numberOfCopies, float rentalFee) {
+Item::Item(string id, string title, string rentalType, string loanType, int numberOfCopies, int availableCopies, float rentalFee, string rentalStatus) {
+    this->id = id;
+    this->title = title;
+    this->rentalType = rentalType;
+    this->loanType = loanType;
+    this->numberOfCopies = numberOfCopies;
+    this->availableCopies = availableCopies;
+    this->rentalFee = rentalFee;
+    this->rentalStatus = rentalStatus;
+}
+Item::Item(string id, string title, string rentalType, string loanType, int numberOfCopies, float rentalFee) {
     this->id = id;
     this->title = title;
     this->rentalType = rentalType;
@@ -13,43 +23,24 @@ Item::Item(string id, string title, eRentalType rentalType, string loanType, int
     this->numberOfCopies = numberOfCopies;
     this->availableCopies = numberOfCopies;
     this->rentalFee = rentalFee;
-    this->rentalStatus = false;
+    this->rentalStatus = "Available";
 }
 Item::Item() {}
+bool Item::isNumber(string input) {
+    for (char const& c : input) {
+        if (isdigit(c) == 0) return false;
+    }
+    return true;
+}
 string Item::GetId() { return id; }
 string Item::GetTitle() { return title; }
-eRentalType Item::GetRentalType() { return rentalType; }
+string Item::GetRentalType() { return rentalType; }
+string Item::GetLoanType() { return loanType; }
+int Item::GetNumberOfCopies() { return numberOfCopies; }
+int Item::GetAvailableCopies() { return availableCopies;  }
+float Item::GetRentalFee() { return rentalFee; }
+string Item::GetRentalStatus() { return rentalStatus; }
 
-string Item::GetRentalTypeString() {
-    string typeString = "";
-    switch (rentalType) {
-    case 1:
-        typeString = "Game";
-        break;
-    case 2:
-        typeString = "DVD";
-        break;
-    case 3:
-        typeString = "Record";
-        break;
-    }
-    return typeString;
-}
-string Item::GetLoanType() { return this->loanType; }
-int Item::GetNumberOfCopies() { return this->numberOfCopies; }
-int Item::GetAvailableCopies() { return this->availableCopies; }
-float Item::GetRentalFee() { return this->rentalFee; }
-bool Item::GetRentalStatus() { return this->rentalStatus; }
-string Item::GetRentalStatusString() {
-    string statusString = "";
-    if (this->rentalStatus == true) {
-        statusString = "Borrowed";
-    }
-    else {
-        statusString = "Available";
-    }
-    return statusString;
-}
 void Item::SetId() {
     string input;
     do {
@@ -62,11 +53,21 @@ void Item::SetId() {
 }
 void Item::SetTitle() {
     cin.ignore();
-    cout << "Enter new title of the item: ";
-    getline(cin, this->title);
+    cout << "Title of the item: ";
+    getline(cin, title);
 }
-void Item::SetRentalType(eRentalType rentalType) {
-    this->rentalType = rentalType;
+void Item::SetRentalType(int type) {
+    switch (type) {
+    case 1:
+        rentalType = "Game";
+        break;
+    case 2:
+        rentalType = "DVD";
+        break;
+    case 3:
+        rentalType = "Record";
+        break;
+    }
 }
 void Item::SetLoanType() {
     string input;
@@ -76,52 +77,68 @@ void Item::SetLoanType() {
         if (!(input == "1" || input == "2"))
             cout << "Invalid option. Try again" << endl;
     } while (!(input == "1" || input == "2"));
-    this->loanType = input == "1" ? "2-day" : "1-week";
+    loanType = input == "1" ? "2-day" : "1-week";
 }
-void Item::SetNumberOfCopies(bool firstTimeCopies) {
-    if (firstTimeCopies == true) {
+void Item::SetNumberOfCopies(bool newItem) {
+    if (newItem == true) {
         cout << "Enter number of copies of new item: " << endl;
-        cin >> this->numberOfCopies;
+        cin >> numberOfCopies;
     }
     else {
-        // Add condition to check whole number
         int newAvailableCopies, newNumberOfCopies;
+        string input;
         do {
+            newAvailableCopies = availableCopies;
             cout << "Enter new number of copies: ";
-            newAvailableCopies = this->availableCopies;
-            cin >> newNumberOfCopies;
-            newAvailableCopies = this->availableCopies + newNumberOfCopies - this->numberOfCopies;
-            cout << "number of copies: " << this->numberOfCopies << endl;
-            cout << "available copies: " << this->availableCopies << endl;
+            cin >> input;
+            if (isNumber(input)) {
+                newNumberOfCopies = stoi(input);
+                newAvailableCopies = availableCopies + newNumberOfCopies - numberOfCopies;
+                cout << "number of copies: " << numberOfCopies << endl;
+                cout << "available copies: " << availableCopies << endl;
+            }
+            else {
+                cout << "Number of copies Must be a number" << endl;
+            }
             if (newAvailableCopies < 0)
-                cout << "new number of copies cannot be less than " << this->numberOfCopies - this->availableCopies << " which is the copies rented out" << endl;
+                cout << "new number of copies cannot be less than " << numberOfCopies - availableCopies << " which is the copies rented out" << endl;
         } while (newAvailableCopies < 0);
-        this->numberOfCopies = newNumberOfCopies;
+        numberOfCopies = newNumberOfCopies;
     }
 }
-
 void Item::SetAvailableCopies(bool isLendingTo) {
     if (isLendingTo == true) {
-        this->availableCopies = this->availableCopies - 1;
-        if (this->availableCopies == 0) this->rentalStatus = true;
-    }
-    else {
+        availableCopies = availableCopies - 1;
+        if (availableCopies == 0) rentalStatus = true;
+    } else {
         int newAvailableCopies;
         do {
             cout << "Enter new available copies: ";
-            cin >> newAvailableCopies;
-            if (newAvailableCopies > this->numberOfCopies) {
-                cout << "Available copies cannot be greater than number of copies";
+            string input;
+            cin >> input;
+            if (isNumber(input)) {
+                newAvailableCopies = stoi(input);
+                if (newAvailableCopies > numberOfCopies) {
+                    cout << "Available copies cannot be greater than number of copies";
+                }
             }
-        } while (newAvailableCopies > this->numberOfCopies);
-        this->availableCopies = newAvailableCopies;
+            else {
+                cout << "Available copies Must be a number" << endl;
+            }
+        } while (newAvailableCopies > numberOfCopies);
+        availableCopies = newAvailableCopies;
     }
-
 }
 void Item::SetRentalFee() {
     // Add condition to check real number
-    cout << "Enter new rental fee: ";
-    cin >> this->rentalFee;
+    cout << "Rental fee: ";
+    string input;
+    cin >> input;
+    if (isNumber(input)) {
+        rentalFee = stof(input);
+    } else {
+        cout << "Rental fee must be a number" << endl;
+    }
 }
 void Item::SetRentalStatus() {
     string input;
@@ -131,16 +148,24 @@ void Item::SetRentalStatus() {
         if (!(input == "1" || input == "2"))
             cout << "Invalid option. Try again" << endl;
     } while (!(input == "1" || input == "2"));
-    this->rentalStatus = input == "1" ? true : false;
+    rentalStatus = input == "1" ? "Borrowed" : "Available";
+}
+void Item::updateValueAfterRenting() {
+    availableCopies--;
+    if (availableCopies == 0) {
+        rentalStatus = "Borrowed";
+    }
 }
 void Item::updateValueAfterReturning() {
-    this->availableCopies++;
-    this->rentalStatus = "false";
+    if (availableCopies == 0) {
+        rentalStatus = "Available";
+    }
+    availableCopies++;
 }
 string Item::ToString() {
     stringstream ss;
     ss << rentalFee;
-    string result = id + "," + title + "," + GetRentalTypeString() + "," + loanType + "," + to_string(numberOfCopies) + "," + ss.str() + GetRentalStatusString();
+    string result = id + "," + title + "," + rentalType + "," + loanType + "," + to_string(numberOfCopies) + "," + ss.str() + rentalStatus;
     return result;
 }
 bool Item::CheckId(string input) {
@@ -148,35 +173,28 @@ bool Item::CheckId(string input) {
     for (size_t i = 0; i < input.length(); i++) {
         if (i == 0) {
             if (input[i] == 'I')
-                continue;
-            else
-                return false;
+            continue;
+        else
+            return false;
         }
         if (i < 4) {
             if (input[i] >= '0' && input[i] <= '9')
-                continue;
-            else
-                return false;
+            continue;
+        else
+            return false;
         }
         if (i == 4) {
             if (input[i] == '-')
-                continue;
-            else
-                return false;
+            continue;
+        else
+            return false;
         }
         if (i > 4) {
             if (input[i] >= '0' && input[i] <= '9')
-                continue;
-            else
-                return false;
+            continue;
+        else
+            return false;
         }
     }
     return true;
-}
-string Item::GetGenreString() {
-    //cout << "this item has no genre";
-    return "not categorized";
-}
-void Item::SetGenre() {
-    cout << "set genre in Item";
 }

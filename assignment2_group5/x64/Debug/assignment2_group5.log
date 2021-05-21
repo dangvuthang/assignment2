@@ -1,2 +1,35 @@
 ﻿  Shop.cpp
-  assignment2_group5.vcxproj -> C:\Users\Admin\Downloads\assignment2-main\x64\Debug\assignment2_group5.exe
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(113,51): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(121,45): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(129,48): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(232,31): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(259,31): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(286,31): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(494,37): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(686,41): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\Admin\Downloads\Compressed\assignment2-main\assignment2_group5\Shop.cpp(731,41): warning C4267: 'argument': conversion from 'size_t' to 'const _Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+  assignment2_group5.vcxproj -> C:\Users\Admin\Downloads\Compressed\assignment2-main\x64\Debug\assignment2_group5.exe
