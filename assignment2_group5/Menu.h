@@ -7,4 +7,5 @@ class Menu {
   static void DisplaySearchMenu();
   static int DisplayTypeOfItem();
   static int DisplayTypeOfSearch();
+  static int DisplayTypeOfPromotion();
 };
