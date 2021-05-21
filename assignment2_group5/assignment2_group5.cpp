@@ -12,14 +12,14 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-  if (argc != 3) {
-    cout << "To run: <program> <item file csv name> <customer csv file name>"
-         << endl;
-    exit(0);
-  }
+  // if (argc != 3) {
+  //   cout << "To run: <program> <item file csv name> <customer csv file name>"
+  //        << endl;
+  //   exit(0);
+  // }
 
-  string itemFile = argv[1];
-  string customerFile = argv[2];
+  string itemFile = "items.csv";
+  string customerFile = "customers.csv";
   string option;
   Shop shop;
 
@@ -103,6 +103,12 @@ int main(int argc, char *argv[]) {
 
   cout << "ASSIGNMENT 2 GROUP 5" << endl;
   cout << "s3879303@rmit.edu.vn, Thang, Dang" << endl;
+  cout << "s3574990@rmit.edu.vn, Quang, Nguyen" << endl;
+  cout << "s3855823@rmit.edu.vn, Khang, Tran" << endl;
+  cout << "s3878116@rmit.edu.vn, Nghia, Dang" << endl;
 
+  string endInput;
+  cout << "Press any button to exit the program...";
+  system("pause");
   return 0;
 }
