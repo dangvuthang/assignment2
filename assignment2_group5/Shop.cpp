@@ -12,11 +12,12 @@ void Shop::AddItem(int type) {
   if (type == 1) {
     Item videoGame;
     videoGame.SetId();
-    if(!listOfId.empty()){
-      while(find(listOfId.begin(), listOfId.end(), videoGame.GetId()) != listOfId.end()) {
-            cout<<"ID already existed"<<endl;
-            videoGame.SetId();
-      } 
+    if (!listOfId.empty()) {
+      while (find(listOfId.begin(), listOfId.end(), videoGame.GetId()) !=
+             listOfId.end()) {
+        cout << "ID already existed" << endl;
+        videoGame.SetId();
+      }
     }
     videoGame.SetTitle();
     videoGame.SetRentalType(type);
@@ -28,11 +29,12 @@ void Shop::AddItem(int type) {
   } else {
     SpecialItem item;
     item.SetId();
-    if(!listOfId.empty()){
-      while(find(listOfId.begin(), listOfId.end(), item.GetId()) != listOfId.end()) {
-            cout<<"ID already existed"<<endl;
-            item.SetId();
-      } 
+    if (!listOfId.empty()) {
+      while (find(listOfId.begin(), listOfId.end(), item.GetId()) !=
+             listOfId.end()) {
+        cout << "ID already existed" << endl;
+        item.SetId();
+      }
     }
     item.SetTitle();
     item.SetRentalType(type);
@@ -42,7 +44,7 @@ void Shop::AddItem(int type) {
     item.SetRentalStatus();
     item.SetGenre();
     type == 2 ? listOfDVDs.push_back(item) : listOfRecords.push_back(item);
-	UpdateID();
+    UpdateID();
   }
 }
 
@@ -279,7 +281,6 @@ int Shop::GetItemIndex(int type, bool onlyAvailableItem) {
       do {
         cout << "Select an item's number: ";
         cin >> index;
-        cin >> index;
         if (isNumber(index)) {
           if (!(stoi(index) >= 1 && stoi(index) <= count))
             cout << "Invalid option. Try again" << endl;
@@ -306,7 +307,6 @@ int Shop::GetItemIndex(int type, bool onlyAvailableItem) {
       }
       do {
         cout << "Select an item's number: ";
-        cin >> index;
         cin >> index;
         if (isNumber(index)) {
           if (!(stoi(index) >= 1 && stoi(index) <= count))
@@ -347,7 +347,6 @@ void Shop::UpdateItem(int type) {
     listOfRecords[index].SetGenre();
   }
   UpdateID();
-
 }
 
 void Shop::DeleteItem(int type) {
@@ -381,10 +380,11 @@ void Shop::AddUser() {
   User user;
   user.SetId();
   if (!listOfId.empty()) {
-	  while (find(listOfId.begin(), listOfId.end(), user.GetId()) != listOfId.end()) {
-		  cout << "ID already existed" << endl;
-		  user.SetId();
-	  }
+    while (find(listOfId.begin(), listOfId.end(), user.GetId()) !=
+           listOfId.end()) {
+      cout << "ID already existed" << endl;
+      user.SetId();
+    }
   }
   user.SetName();
   user.SetAddress();
@@ -813,7 +813,7 @@ void Shop::PromoteAUser(int type) {
 }
 
 void Shop::saveItem(string itemFile) {
-  if(itemFile.find(".csv") == string::npos){
+  if (itemFile.find(".csv") == string::npos) {
     itemFile += ".csv";
   }
   ofstream itemcsv(itemFile);
@@ -851,12 +851,13 @@ void Shop::saveItem(string itemFile) {
 }
 
 void Shop::saveUser(string userFile) {
-  if(userFile.find(".csv") == string::npos){
-	  userFile += ".csv";
+  if (userFile.find(".csv") == string::npos) {
+    userFile += ".csv";
   }
   ofstream usercsv(userFile);
 
-  usercsv << "ID,name,address,phone,role,number of item returned,reward point,list rentals"
+  usercsv << "ID,name,address,phone,role,number of item returned,reward "
+             "point,list rentals"
           << endl;
 
   // Save video games
@@ -865,7 +866,6 @@ void Shop::saveUser(string userFile) {
             << "," << user.GetPhone() << "," << user.GetRole() << ","
             << user.GetNumberOfItemReturned() << ","
             << user.GetRewardPointForVIP() << ",";
-
 
     vector<string> listOfRental = user.GetListOfRentals();
     for (auto it = listOfRental.begin(); it != listOfRental.end(); ++it) {
@@ -898,19 +898,17 @@ void Shop::loadItem(string itemFile) {
       getline(ss, substr, ',');
       resultLine.push_back(substr);
     }
-	if (firstLine) {
-		if (resultLine[0] != "Type" &&
-			resultLine[1] != "ID" &&
-			resultLine[2] != "Rental type" &&
-			resultLine[3] != "Number of copies" &&
-			resultLine[4] != "Rental fee" &&
-			resultLine[5] != "Rental status"&&
-			resultLine[6] != "genre") {
-		}
-		firstLine = false;
-		cout << "INPUT FILE HAS INCORRECT FORMAT" << endl;
-		break;
-	}
+    if (firstLine) {
+      if (resultLine[0] != "Type" && resultLine[1] != "ID" &&
+          resultLine[2] != "Rental type" &&
+          resultLine[3] != "Number of copies" &&
+          resultLine[4] != "Rental fee" && resultLine[5] != "Rental status" &&
+          resultLine[6] != "genre") {
+      }
+      firstLine = false;
+      cout << "INPUT FILE HAS INCORRECT FORMAT" << endl;
+      break;
+    }
 
     switch (stoi(resultLine[0])) {
       case 1:
@@ -967,48 +965,46 @@ void Shop::loadUser(string userFile) {
         listOfRentals.push_back(substr);
       }
     }
-	if (firstLine) {
-		if (resultLine[0] != "ID" &&
-			resultLine[1] != "name" &&
-			resultLine[2] != "address" &&
-			resultLine[3] != "phone" &&
-			resultLine[4] != "role" &&
-			resultLine[5] != "number of item returned"&&
-			resultLine[6] != "reward point" &&
-			resultLine[7] != "list rentals") {
-		}
-		firstLine = false;
-		listOfRentals.clear();
-		cout << "INPUT FILE HAS INCORRECT FORMAT" << endl;
-		break;
-	}
-    this->listOfUsers.push_back(
-        User(resultLine[0], resultLine[1], resultLine[2], resultLine[3],
-             resultLine[4], stoi(resultLine[5]),stoi(resultLine[6]), listOfRentals));
+    if (firstLine) {
+      if (resultLine[0] != "ID" && resultLine[1] != "name" &&
+          resultLine[2] != "address" && resultLine[3] != "phone" &&
+          resultLine[4] != "role" &&
+          resultLine[5] != "number of item returned" &&
+          resultLine[6] != "reward point" && resultLine[7] != "list rentals") {
+      }
+      firstLine = false;
+      listOfRentals.clear();
+      cout << "INPUT FILE HAS INCORRECT FORMAT" << endl;
+      break;
+    }
+    this->listOfUsers.push_back(User(resultLine[0], resultLine[1],
+                                     resultLine[2], resultLine[3],
+                                     resultLine[4], stoi(resultLine[5]),
+                                     stoi(resultLine[6]), listOfRentals));
   }
 }
 
 void Shop::UpdateID() {
   listOfId.clear();
-  if(!listOfVideoGames.empty()){
-    for(Item item : listOfVideoGames){
+  if (!listOfVideoGames.empty()) {
+    for (Item item : listOfVideoGames) {
       listOfId.push_back(item.GetId());
-      }
+    }
   }
-  
-  if(!listOfRecords.empty()){
-    for(SpecialItem item : listOfRecords){
+
+  if (!listOfRecords.empty()) {
+    for (SpecialItem item : listOfRecords) {
       listOfId.push_back(item.GetId());
-      }
+    }
   }
-  if(!listOfDVDs.empty()){
-    for(SpecialItem item : listOfDVDs){
+  if (!listOfDVDs.empty()) {
+    for (SpecialItem item : listOfDVDs) {
       listOfId.push_back(item.GetId());
-      }
+    }
   }
   if (!listOfUsers.empty()) {
-	  for (User user : listOfUsers) {
-		  listOfId.push_back(user.GetId());
-	  }
+    for (User user : listOfUsers) {
+      listOfId.push_back(user.GetId());
+    }
   }
 }
