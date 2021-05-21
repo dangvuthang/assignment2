@@ -44,8 +44,8 @@ void Shop::AddItem(int type) {
     item.SetRentalStatus();
     item.SetGenre();
     type == 2 ? listOfDVDs.push_back(item) : listOfRecords.push_back(item);
-    UpdateID();
   }
+  UpdateID();
 }
 
 bool isNumber(const string& str) {
