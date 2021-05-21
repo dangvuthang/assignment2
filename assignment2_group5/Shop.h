@@ -20,6 +20,8 @@ class Shop {
   bool IsItemListEmpty(int type);
   void DisplayUserInfo(User user, int position);
   bool IsUserListEmpty();
+  bool CheckIfUserCanBorrowItem(int itemType, int indexForItem,
+                                int indexForUser);
 
  public:
   Shop();
@@ -32,6 +34,7 @@ class Shop {
   void AddUser();
   void ShowAllUsers();
   void ShowAllUsers(int type);
+  void PromoteAUser(int type);
   void UpdateUser();
   int GetItemIndex(int type);
   int GetItemIndex(int type, bool onlyAvailableItem);

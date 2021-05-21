@@ -5,8 +5,12 @@
 #include <vector>
 using namespace std;
 
-User::User() { this->numberOfItemReturned = 0; }
-User::User(string id, string name, string address, string phone, string role, int numberOfItemReturned, vector<string> listOfRentals) {
+User::User() {
+  this->numberOfItemReturned = 0;
+  this->rewardPointForVIP = 0;
+}
+User::User(string id, string name, string address, string phone, string role,
+           int numberOfItemReturned, int rewardPointForVIP, vector<string> listOfRentals) {
   this->id = id;
   this->name = name;
   this->address = address;
@@ -14,12 +18,15 @@ User::User(string id, string name, string address, string phone, string role, in
   this->role = role;
   this->numberOfItemReturned = numberOfItemReturned;
   this->listOfRentals = listOfRentals;
+  // Add more field include it when save, and read. Tks you
+  this->rewardPointForVIP = rewardPointForVIP;
 }
 string User::GetId() { return id; }
 string User::GetName() { return name; }
 string User::GetAddress() { return address; }
 string User::GetPhone() { return phone; }
 string User::GetRole() { return role; }
+int User::GetRewardPointForVIP() { return rewardPointForVIP; }
 int User::GetNumberOfItemReturned() { return numberOfItemReturned; }
 vector<string> User::GetListOfRentals() { return listOfRentals; }
 void User::SetId() {
@@ -57,6 +64,7 @@ void User::SetRole() {
   if (input == "2") this->role = "Regular";
   if (input == "3") this->role = "VIP";
 }
+
 void User::SetRole(string role) { this->role = role; }
 
 void User::AddRental(string itemId) { this->listOfRentals.push_back(itemId); }
@@ -85,4 +93,23 @@ string User::ReturnRental(int index) {
   listOfRentals.erase(listOfRentals.begin() + index);
   this->numberOfItemReturned++;
   return itemId;
+}
+
+void User::UpdateRewardPointForVIP() {
+  if (role != "VIP") {
+    cout << "Only VIP can have reward point" << endl;
+    return;
+  }
+  rewardPointForVIP += 10;
+}
+
+void User::UpdateRewardPointForVIP(bool usePointToBorrow) {
+  if (usePointToBorrow) {
+    if (role != "VIP") {
+      cout << "Only VIP can have reward point " << endl;
+      return;
+    }
+    rewardPointForVIP -= 100;
+  } else
+    this->UpdateRewardPointForVIP();
 }
