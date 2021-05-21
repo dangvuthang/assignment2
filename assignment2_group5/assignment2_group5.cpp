@@ -101,5 +101,5 @@ int main(int argc, char *argv[]) {
   shop.saveUser(customerFile);
   cout << "Done." << endl;
 
-    return 0;
+  return 0;
 }

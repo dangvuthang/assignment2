@@ -854,7 +854,6 @@ void Shop::saveUser(string userFile) {
   if (userFile.find(".csv") == string::npos) {
     userFile += ".csv";
   }
-  cout << userFile << endl;
   ofstream usercsv(userFile);
 
   usercsv << "ID,name,address,phone,role,number of item returned,reward "
