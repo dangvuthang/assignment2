@@ -888,6 +888,7 @@ void Shop::loadItem(string itemFile) {
 
   // Get column name
   if (itemcsv.good()) getline(itemcsv, line);
+<<<<<<< Updated upstream
 
   while (getline(itemcsv, line)) {
     stringstream ss(line);
@@ -919,6 +920,47 @@ void Shop::loadItem(string itemFile) {
         break;
     }
   }
+=======
+  if (line != "Type,ID,Title,Rental type,Loan Type,Number of copies,Rental fee,Rental status,genre") 
+  {
+	  cout << "ITEM FILE HAS INCORRECT FORMAT" << endl;
+  }
+  else {
+	  while (getline(itemcsv, line)) {
+		  stringstream ss(line);
+		  vector<string> resultLine;
+
+		  while (ss.good()) {
+			  string substr;
+			  getline(ss, substr, ',');
+			  resultLine.push_back(substr);
+		  }
+
+
+		  switch (stoi(resultLine[0])) {
+		  case 1:
+			  this->listOfVideoGames.push_back(
+				  Item(resultLine[1], resultLine[2], resultLine[3], resultLine[4],
+					  stoi(resultLine[5]), stof(resultLine[6]), resultLine[7]));
+			  break;
+		  case 2:
+			  this->listOfDVDs.push_back(
+				  SpecialItem(resultLine[1], resultLine[2], resultLine[3],
+					  resultLine[4], stoi(resultLine[5]), stof(resultLine[6]),
+					  resultLine[7], resultLine[8]));
+			  break;
+		  case 3:
+			  this->listOfRecords.push_back(
+				  SpecialItem(resultLine[1], resultLine[2], resultLine[3],
+					  resultLine[4], stoi(resultLine[5]), stof(resultLine[6]),
+					  resultLine[7], resultLine[8]));
+			  break;
+		  }
+	  }
+  }
+	  
+  
+>>>>>>> Stashed changes
 }
 
 void Shop::loadUser(string userFile) {
@@ -933,6 +975,7 @@ void Shop::loadUser(string userFile) {
 
   // Get column name
   if (usercsv.good()) getline(usercsv, line);
+<<<<<<< Updated upstream
 
   while (getline(usercsv, line)) {
     stringstream ss(line);
@@ -958,6 +1001,38 @@ void Shop::loadUser(string userFile) {
         User(resultLine[0], resultLine[1], resultLine[2], resultLine[3],
              resultLine[4], stoi(resultLine[5]),stoi(resultLine[6]), listOfRentals));
   }
+=======
+  if (line != "ID,name,address,phone,role,number of item returned,reward point,list rentals")
+  {
+	  cout << "ITEM FILE HAS INCORRECT FORMAT" << endl;
+  }
+  else {
+	  while (getline(usercsv, line)) {
+		  stringstream ss(line);
+		  vector<string> resultLine;
+		  vector<string> listOfRentals;
+
+		  while (ss.good()) {
+			  string substr;
+			  getline(ss, substr, ',');
+			  resultLine.push_back(substr);
+		  }
+
+		  if (resultLine.back() != "") {
+			  ss = stringstream(resultLine.back());
+			  while (ss.good()) {
+				  string substr;
+				  getline(ss, substr, ';');
+				  listOfRentals.push_back(substr);
+			  }
+		  }
+		  this->listOfUsers.push_back(
+			  User(resultLine[0], resultLine[1], resultLine[2], resultLine[3],
+				  resultLine[4], stoi(resultLine[5]), stoi(resultLine[6]), listOfRentals));
+	  }
+  }
+ 
+>>>>>>> Stashed changes
 }
 
 void Shop::UpdateID() {
