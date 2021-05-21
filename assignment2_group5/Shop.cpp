@@ -885,7 +885,7 @@ void Shop::loadItem(string itemFile) {
   }
 
   string line;
-
+  bool firstLine = true;
   // Get column name
   if (itemcsv.good()) getline(itemcsv, line);
 
@@ -898,6 +898,19 @@ void Shop::loadItem(string itemFile) {
       getline(ss, substr, ',');
       resultLine.push_back(substr);
     }
+	if (firstLine) {
+		if (resultLine[0] != "Type" &&
+			resultLine[1] != "ID" &&
+			resultLine[2] != "Rental type" &&
+			resultLine[3] != "Number of copies" &&
+			resultLine[4] != "Rental fee" &&
+			resultLine[5] != "Rental status"&&
+			resultLine[6] != "genre") {
+		}
+		firstLine = false;
+		cout << "INPUT FILE HAS INCORRECT FORMAT" << endl;
+		break;
+	}
 
     switch (stoi(resultLine[0])) {
       case 1:
@@ -930,6 +943,7 @@ void Shop::loadUser(string userFile) {
   }
 
   string line;
+  bool firstLine = true;
 
   // Get column name
   if (usercsv.good()) getline(usercsv, line);
@@ -953,7 +967,21 @@ void Shop::loadUser(string userFile) {
         listOfRentals.push_back(substr);
       }
     }
-
+	if (firstLine) {
+		if (resultLine[0] != "ID" &&
+			resultLine[1] != "name" &&
+			resultLine[2] != "address" &&
+			resultLine[3] != "phone" &&
+			resultLine[4] != "role" &&
+			resultLine[5] != "number of item returned"&&
+			resultLine[6] != "reward point" &&
+			resultLine[7] != "list rentals") {
+		}
+		firstLine = false;
+		listOfRentals.clear();
+		cout << "INPUT FILE HAS INCORRECT FORMAT" << endl;
+		break;
+	}
     this->listOfUsers.push_back(
         User(resultLine[0], resultLine[1], resultLine[2], resultLine[3],
              resultLine[4], stoi(resultLine[5]),stoi(resultLine[6]), listOfRentals));
