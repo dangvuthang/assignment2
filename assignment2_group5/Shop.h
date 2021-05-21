@@ -9,6 +9,7 @@
 using namespace std;
 class Shop {
  private:
+  vector<string> listOfId;
   vector<Item> listOfVideoGames;
   vector<SpecialItem> listOfDVDs;
   vector<SpecialItem> listOfRecords;
@@ -48,4 +49,6 @@ class Shop {
   void saveUser(string userFile);
   void loadItem(string itemFile);
   void loadUser(string userFile);
+  void UpdateID();
+
 };

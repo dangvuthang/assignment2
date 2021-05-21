@@ -12,6 +12,12 @@ void Shop::AddItem(int type) {
   if (type == 1) {
     Item videoGame;
     videoGame.SetId();
+    if(!listOfId.empty()){
+      while(find(listOfId.begin(), listOfId.end(), videoGame.GetId()) != listOfId.end()) {
+            cout<<"ID already existed"<<endl;
+            videoGame.SetId();
+      } 
+    }
     videoGame.SetTitle();
     videoGame.SetRentalType(type);
     videoGame.SetLoanType();
@@ -22,6 +28,12 @@ void Shop::AddItem(int type) {
   } else {
     SpecialItem item;
     item.SetId();
+    if(!listOfId.empty()){
+      while(find(listOfId.begin(), listOfId.end(), item.GetId()) != listOfId.end()) {
+            cout<<"ID already existed"<<endl;
+            item.SetId();
+      } 
+    }
     item.SetTitle();
     item.SetRentalType(type);
     item.SetLoanType();
@@ -30,6 +42,7 @@ void Shop::AddItem(int type) {
     item.SetRentalStatus();
     item.SetGenre();
     type == 2 ? listOfDVDs.push_back(item) : listOfRecords.push_back(item);
+	UpdateID();
   }
 }
 
@@ -333,6 +346,8 @@ void Shop::UpdateItem(int type) {
     listOfRecords[index].SetRentalStatus();
     listOfRecords[index].SetGenre();
   }
+  UpdateID();
+
 }
 
 void Shop::DeleteItem(int type) {
@@ -345,6 +360,7 @@ void Shop::DeleteItem(int type) {
   } else if (type == 3) {
     listOfRecords.erase(listOfRecords.begin() + index);
   }
+  UpdateID();
 }
 
 void Shop::DisplayUserInfo(User user, int position) {
@@ -364,11 +380,18 @@ bool Shop::IsUserListEmpty() {
 void Shop::AddUser() {
   User user;
   user.SetId();
+  if (!listOfId.empty()) {
+	  while (find(listOfId.begin(), listOfId.end(), user.GetId()) != listOfId.end()) {
+		  cout << "ID already existed" << endl;
+		  user.SetId();
+	  }
+  }
   user.SetName();
   user.SetAddress();
   user.SetPhone();
   user.SetRole();
   listOfUsers.push_back(user);
+  UpdateID();
 }
 
 void Shop::ShowAllUsers() {
@@ -790,6 +813,9 @@ void Shop::PromoteAUser(int type) {
 }
 
 void Shop::saveItem(string itemFile) {
+  if(itemFile.find(".csv") == string::npos){
+    itemFile += ".csv";
+  }
   ofstream itemcsv(itemFile);
 
   itemcsv << "Type,ID,Title,Rental type,Loan Type,Number of copies,Rental "
@@ -825,6 +851,9 @@ void Shop::saveItem(string itemFile) {
 }
 
 void Shop::saveUser(string userFile) {
+  if(userFile.find(".csv") == string::npos){
+	  userFile += ".csv";
+  }
   ofstream usercsv(userFile);
 
   usercsv << "ID,name,address,phone,role,number of item returned,reward point,list rentals"
@@ -928,5 +957,30 @@ void Shop::loadUser(string userFile) {
     this->listOfUsers.push_back(
         User(resultLine[0], resultLine[1], resultLine[2], resultLine[3],
              resultLine[4], stoi(resultLine[5]),stoi(resultLine[6]), listOfRentals));
+  }
+}
+
+void Shop::UpdateID() {
+  listOfId.clear();
+  if(!listOfVideoGames.empty()){
+    for(Item item : listOfVideoGames){
+      listOfId.push_back(item.GetId());
+      }
+  }
+  
+  if(!listOfRecords.empty()){
+    for(SpecialItem item : listOfRecords){
+      listOfId.push_back(item.GetId());
+      }
+  }
+  if(!listOfDVDs.empty()){
+    for(SpecialItem item : listOfDVDs){
+      listOfId.push_back(item.GetId());
+      }
+  }
+  if (!listOfUsers.empty()) {
+	  for (User user : listOfUsers) {
+		  listOfId.push_back(user.GetId());
+	  }
   }
 }
