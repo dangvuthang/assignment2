@@ -9,9 +9,9 @@
 using namespace std;
 class Shop {
 private:
-	vector<Item> listOfVideoGames;
-	vector<SpecialItem> listOfDVDs;
-	vector<SpecialItem> listOfRecords;
+	//vector<Item> listOfVideoGames;
+	//vector<SpecialItem> listOfDVDs;
+	//vector<SpecialItem> listOfRecords;
 	vector<User> listOfUsers;
 	vector<Item*> listOfItem;
 
@@ -34,8 +34,8 @@ public:
 	void ShowAllUsers();
 	void ShowAllUsers(int type);
 	void UpdateUser();
-	int GetItemIndex(eRentalType type);
 	int GetItemIndex(eRentalType type, bool onlyAvailableItem);
+	int GetItemIndex(eRentalType type);
 	int GetUserIndex();
 	void RentItem(eRentalType type);
 	void ReturnItem();

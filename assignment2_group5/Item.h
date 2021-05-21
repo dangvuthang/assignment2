@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-enum eRentalType { game = 1, dvd, record };
+enum eRentalType { game = 1, dvd = 2, record = 3 };
 class Item {
 private:
     string id;
@@ -33,9 +33,7 @@ public:
     void SetTitle();
     void SetRentalType(eRentalType type);
     void SetLoanType();
-    void SetNumberOfCopies();
     void SetNumberOfCopies(bool firstTimeCopies);
-    void SetAvailableCopies();
     void SetAvailableCopies(bool isLendingTo);
     void updateValueAfterReturning();
     void SetRentalFee();
@@ -43,4 +41,5 @@ public:
     string ToString();
     static bool CheckId(string input);
     virtual string GetGenreString();
+    virtual void SetGenre();
 };

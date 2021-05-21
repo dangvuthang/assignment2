@@ -1,6 +1,7 @@
 #include "Shop.h"
 #include <fstream>
-
+#include "Item.h"
+#include "SpecialItem.h"
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -9,7 +10,6 @@ using namespace std;
 Shop::Shop() {}
 
 void Shop::AddItem(eRentalType type) {
-    Item* itemPtr;
     bool firstTimeCopies = true;
     if (type == game) {
         Item videoGame;
@@ -21,7 +21,7 @@ void Shop::AddItem(eRentalType type) {
         videoGame.SetRentalFee();
         //videoGame.SetRentalStatus();
         //listOfVideoGames.push_back(videoGame);
-        itemPtr = &videoGame;
+        listOfItem.push_back(new Item(videoGame.GetId(), videoGame.GetTitle(), videoGame.GetRentalType(), videoGame.GetLoanType(), videoGame.GetNumberOfCopies(), videoGame.GetRentalFee() ));
     }
     else {
         SpecialItem item;
@@ -34,12 +34,12 @@ void Shop::AddItem(eRentalType type) {
         //item.SetRentalStatus();
         item.SetGenre();
         //type == 2 ? listOfDVDs.push_back(item) : listOfRecords.push_back(item);
-        itemPtr = &item;
+        listOfItem.push_back(new SpecialItem(item.GetId(), item.GetTitle(), item.GetRentalType(), item.GetLoanType(), item.GetNumberOfCopies(), item.GetRentalFee(), item.GetGenre() ));
     }
-    listOfItem.push_back(itemPtr);
+    
     cout << "current list size: " << listOfItem.size() << endl;
     cout << "added item: " << endl;
-    DisplayItemInfo(itemPtr, 1);
+    //DisplayItemInfo(itemPtr, 00);
 }
 void Shop::DisplayItemInfo(Item* item, int position) {
     cout << position << ". "
@@ -96,21 +96,10 @@ void Shop::ShowAllItems() {
         ShowAllItems(dvd);
         ShowAllItems(record);
     }
-    /*
-    for (int i = 0; i < listOfItem.size(); i++){
-      cout << "ID: " << listOfItem[i]->GetId()
-        << ", Title: " << listOfItem[i]->GetTitle()
-        << ", Rental type: " << listOfItem[i]->GetRentalTypeString()
-        << ", Loan type: " << listOfItem[i]->GetLoanType()
-        << ", Number of copies: " << listOfItem[i]->GetNumberOfCopies()
-        << ", Rental fee: " << listOfItem[i]->GetRentalFee()
-        << ", Rental status: " << listOfItem[i]->GetRentalStatusString();
-    }
-    */
+
 }
 void Shop::ShowAllItems(eRentalType type) {
     if (!IsItemListEmpty(type)) {
-        int count = 0;
         switch (type) {
         case 1:
             cout << "Video Games: " << endl;
@@ -123,11 +112,13 @@ void Shop::ShowAllItems(eRentalType type) {
             break;
         }
         for (int i = 0; i < listOfItem.size(); i++) {
+            Item* item = listOfItem[i];
+            //cout << "show item NAME: " << listOfItem[i]->GetTitle() << endl;
             cout << "show item type: " << listOfItem[i]->GetRentalType() << endl;
             cout << "show enum type: " << type << endl;
+            
             if (listOfItem[i]->GetRentalType() == type) {
                 DisplayItemInfo(listOfItem[i], i + 1);
-                count++;
             }
         }
     }
@@ -137,8 +128,8 @@ void Shop::ShowAllOutOfStockItems() {
     if (!IsItemListEmpty(game)) {
         int count = 0;
         cout << "Video Games: " << endl;
-        for (int i = 0; i < listOfVideoGames.size(); i++) {
-            if (listOfItem[i]->GetRentalType() == game && listOfItem[i]->GetRentalStatus() == true && listOfItem[i]->GetNumberOfCopies() == 0)
+        for (int i = 0; i < listOfItem.size(); i++) {
+            if (listOfItem[i]->GetRentalType() == game && listOfItem[i]->GetRentalStatus() == true && listOfItem[i]->GetAvailableCopies() == 0)
                 DisplayItemInfo(listOfItem[i], ++count);
         }
         if (count == 0) cout << "No Video Games currently out of stock" << endl;
@@ -146,8 +137,8 @@ void Shop::ShowAllOutOfStockItems() {
     if (!IsItemListEmpty(dvd)) {
         int count = 0;
         cout << "DVDs: " << endl;
-        for (int i = 0; i < listOfDVDs.size(); i++) {
-            if (listOfItem[i]->GetRentalType() == dvd && listOfItem[i]->GetRentalStatus() == true && listOfItem[i]->GetNumberOfCopies() == 0)
+        for (int i = 0; i < listOfItem.size(); i++) {
+            if (listOfItem[i]->GetRentalType() == dvd && listOfItem[i]->GetRentalStatus() == true && listOfItem[i]->GetAvailableCopies() == 0)
                 DisplayItemInfo(listOfItem[i], ++count);
         }
         if (count == 0) cout << "No DVDs currently out of stock" << endl;
@@ -155,8 +146,8 @@ void Shop::ShowAllOutOfStockItems() {
     if (!IsItemListEmpty(record)) {
         int count = 0;
         cout << "Movie Record: " << endl;
-        for (int i = 0; i < listOfRecords.size(); i++) {
-            if (listOfItem[i]->GetRentalType() == record && listOfItem[i]->GetRentalStatus() == true && listOfItem[i]->GetNumberOfCopies() == 0)
+        for (int i = 0; i < listOfItem.size(); i++) {
+            if (listOfItem[i]->GetRentalType() == record && listOfItem[i]->GetRentalStatus() == true && listOfItem[i]->GetAvailableCopies() == 0)
                 DisplayItemInfo(listOfItem[i], ++count);
         }
         if (count == 0) cout << "No Records currently out of stock" << endl;
@@ -166,186 +157,130 @@ int Shop::GetItemIndex(eRentalType type) {
     int count = 0, index = 0;
     vector<int> position;
     cout << "the type of the item is: " << type << endl;
-    switch (type) {
-    case 1:
-        if (!IsItemListEmpty(game)) {
-            for (int i = 0; i < listOfItem.size(); i++) {
-                cout << "item type: " << listOfItem[i]->GetRentalType() << endl;
-                cout << "enum type: " << game << endl;
-                if (listOfItem[i]->GetRentalType() == game) {
-                    position.push_back(i);
-                    count++;
-                    DisplayItemInfo(listOfItem[i], count);
-                }
+    if (!IsItemListEmpty(type)) {
+        for (int i = 0; i < listOfItem.size(); i++) {
+            cout << "item type: " << listOfItem[i]->GetRentalType() << endl;
+            cout << "enum type: " << type << endl;
+            if (listOfItem[i]->GetRentalType() == type) {
+                position.push_back(i);
+                count++;
+                DisplayItemInfo(listOfItem[i], count);
             }
-            if (count == 0) {
-                cout << "No video game is currently available";
-                return -1;
-            }
-            do {
-                cout << "Select an item's number: ";
-                cin >> index;
-                if (!(index >= 1 && index <= count))
-                    cout << "Invalid option. Try again" << endl;
-            } while (!(index >= 1 && index <= count));
         }
-        break;
-    case 2:
-        if (!IsItemListEmpty(dvd)) {
-            for (int i = 0; i < listOfItem.size(); i++) {
-                cout << "item type: " << listOfItem[i]->GetRentalType() << endl;
-                cout << "enum type: " << dvd << endl;
-                if (listOfItem[i]->GetRentalType() == dvd) {
-                    position.push_back(i);
-                    count++;
-                    DisplayItemInfo(listOfItem[i], count);
-                }
-            }
-            if (count == 0) {
-                cout << "No video game is currently available";
+        if (count == 0) {
+            switch (type) {
+            case 1:
+                cout << "No video game is Exist in store";
                 return -1;
-            }
-            do {
-                cout << "Select an item's number: ";
-                cin >> index;
-                if (!(index >= 1 && index <= count))
-                    cout << "Invalid option. Try again" << endl;
-            } while (!(index >= 1 && index <= count));
-        }
-        break;
-    case 3:
-        if (!IsItemListEmpty(record)) {
-            for (int i = 0; i < listOfRecords.size(); i++) {
-                cout << "item type: " << listOfItem[i]->GetRentalType() << endl;
-                cout << "enum type: " << record << endl;
-                if (listOfItem[i]->GetRentalType() == record) {
-                    position.push_back(i);
-                    count++;
-                    DisplayItemInfo(listOfItem[i], count);
-                }
-            }
-            if (count == 0) {
-                cout << "No video game is currently available";
+                break;
+            case 2:
+                cout << "No dvd is Exist in store";
                 return -1;
+                break;
+            case 3:
+                cout << "No movie record is Exist in store";
+                return -1;
+                break;
             }
-            do {
-                cout << "Select an item's number: ";
-                cin >> index;
-                if (!(index >= 1 && index <= count))
-                    cout << "Invalid option. Try again" << endl;
-            } while (!(index >= 1 && index <= count));
         }
-        break;
+        do {
+            cout << "Select an item's number: ";
+            cin >> index;
+            if (!(index >= 1 && index <= count))
+                cout << "Invalid option. Try again" << endl;
+        } while (!(index >= 1 && index <= count));
     }
     return count != 0 ? position[index - 1] : -1;
 }
-int Shop::GetItemIndex(eRentalType type, bool onlyAvailableItem) {
-    int index = 0, count = 0;
+int Shop::GetItemIndex(eRentalType type, bool fullyAvailableItem) {
+    int count = 0, index = 0;
     vector<int> position;
-    switch (type) {
-    case 1:
-        if (!IsItemListEmpty(game)) {
-            for (int i = 0; i < listOfItem.size(); i++) {
-                if (listOfItem[i]->GetRentalType() == game && listOfItem[i]->GetNumberOfCopies() != 0 && listOfItem[i]->GetRentalStatus() != true) {
+    cout << "the type of the item is: " << type << endl;
+    if (!IsItemListEmpty(type)) {
+        for (int i = 0; i < listOfItem.size(); i++) {
+            cout << "item type: " << listOfItem[i]->GetRentalType() << endl;
+            cout << "enum type: " << type << endl;
+            if (fullyAvailableItem == true) {
+                if (listOfItem[i]->GetRentalType() == type && listOfItem[i]->GetNumberOfCopies() == listOfItem[i]->GetAvailableCopies() && listOfItem[i]->GetRentalStatus() != true) {
                     position.push_back(i);
                     count++;
                     DisplayItemInfo(listOfItem[i], count);
                 }
             }
-            if (count == 0) {
-                cout << "No video game is currently available";
-                return -1;
-            }
-            do {
-                cout << "Select an item's number: ";
-                cin >> index;
-                if (!(index >= 1 && index <= count))
-                    cout << "Invalid option. Try again" << endl;
-            } while (!(index >= 1 && index <= count));
-        }
-        break;
-    case 2:
-        if (!IsItemListEmpty(dvd)) {
-            for (int i = 0; i < listOfItem.size(); i++) {
-                if (listOfItem[i]->GetRentalType() == dvd && listOfItem[i]->GetNumberOfCopies() != 0 && listOfItem[i]->GetRentalStatus() != true) {
+            else {
+                if (listOfItem[i]->GetRentalType() == type && listOfItem[i]->GetNumberOfCopies() != 0 && listOfItem[i]->GetRentalStatus() != true) {
                     position.push_back(i);
                     count++;
                     DisplayItemInfo(listOfItem[i], count);
                 }
             }
-            if (count == 0) {
+        }
+        if (fullyAvailableItem == true && count == 0) {
+            switch (type) {
+            case 1:
+                cout << "No video game is Fully available";
+                return -1;
+                break;
+            case 2:
+                cout << "No dvd is Fully available";
+                return -1;
+                break;
+            case 3:
+                cout << "No movie record is Fully available";
+                return -1;
+                break;
+            }
+        }
+        else if (fullyAvailableItem == false && count == 0) {
+            switch (type) {
+            case 1:
                 cout << "No video game is currently available";
                 return -1;
-            }
-            do {
-                cout << "Select an item's number: ";
-                cin >> index;
-                if (!(index >= 1 && index <= count))
-                    cout << "Invalid option. Try again" << endl;
-            } while (!(index >= 1 && index <= count));
-        }
-        break;
-    case 3:
-        if (!IsItemListEmpty(record)) {
-            for (int i = 0; i < listOfRecords.size(); i++) {
-                if (listOfItem[i]->GetRentalType() == record && listOfItem[i]->GetNumberOfCopies() != 0 && listOfItem[i]->GetRentalStatus() != true) {
-                    position.push_back(i);
-                    count++;
-                    DisplayItemInfo(listOfItem[i], count);
-                }
-            }
-            if (count == 0) {
-                cout << "No video game is currently available";
+                break;
+            case 2:
+                cout << "No dvd is currently available";
                 return -1;
+                break;
+            case 3:
+                cout << "No movie record is currently available";
+                return -1;
+                break;
             }
-            do {
-                cout << "Select an item's number: ";
-                cin >> index;
-                if (!(index >= 1 && index <= count))
-                    cout << "Invalid option. Try again" << endl;
-            } while (!(index >= 1 && index <= count));
         }
-        break;
+        do {
+            cout << "Select an item's number: ";
+            cin >> index;
+            if (!(index >= 1 && index <= count))
+                cout << "Invalid option. Try again" << endl;
+        } while (!(index >= 1 && index <= count));
     }
     return count != 0 ? position[index - 1] : -1;
 }
 
 void Shop::UpdateItem(eRentalType type) {
     int index = GetItemIndex(type);
-
     if (index == -1) return;
     if (type == game) {
-        listOfVideoGames[index].SetTitle();
-        listOfVideoGames[index].SetLoanType();
-        listOfVideoGames[index].SetNumberOfCopies();
-        listOfVideoGames[index].SetRentalFee();
-        listOfVideoGames[index].SetRentalStatus();
+        listOfItem[index]->SetTitle();
+        listOfItem[index]->SetLoanType();
+        listOfItem[index]->SetNumberOfCopies(false);
+        listOfItem[index]->SetRentalFee();
+        listOfItem[index]->SetRentalStatus();
     }
-    else if (type == dvd) {
-        listOfDVDs[index].SetTitle();
-        listOfDVDs[index].SetLoanType();
-        listOfDVDs[index].SetNumberOfCopies();
-        listOfDVDs[index].SetRentalFee();
-        listOfDVDs[index].SetRentalStatus();
-        listOfDVDs[index].SetGenre();
-    }
-    else if (type == record) {
-        listOfRecords[index].SetTitle();
-        listOfRecords[index].SetLoanType();
-        listOfRecords[index].SetNumberOfCopies();
-        listOfRecords[index].SetRentalFee();
-        listOfRecords[index].SetRentalStatus();
-        listOfRecords[index].SetGenre();
+    else if (type == dvd || type == record) {
+        listOfItem[index]->SetTitle();
+        listOfItem[index]->SetLoanType();
+        listOfItem[index]->SetNumberOfCopies(false);
+        listOfItem[index]->SetRentalFee();
+        listOfItem[index]->SetRentalStatus();
+        listOfItem[index]->SetGenre();
     }
 }
-
 void Shop::DeleteItem(eRentalType type) {
-    int index = GetItemIndex(type);
+    int index = GetItemIndex(type, true);
     if (index == -1) return;
     listOfItem.erase(listOfItem.begin() + index);
-
 }
-
 void Shop::DisplayUserInfo(User user, int position) {
     cout << position << ". ID: " << user.GetId() << ", Name: " << user.GetName()
         << ", Address: " << user.GetAddress() << ", Phone: " << user.GetPhone()
@@ -359,7 +294,6 @@ bool Shop::IsUserListEmpty() {
     }
     return false;
 }
-
 void Shop::AddUser() {
     User user;
     user.SetId();
@@ -369,7 +303,6 @@ void Shop::AddUser() {
     user.SetRole();
     listOfUsers.push_back(user);
 }
-
 void Shop::ShowAllUsers() {
     if (!IsUserListEmpty()) {
         for (int i = 0; i < listOfUsers.size(); i++) {
@@ -377,7 +310,6 @@ void Shop::ShowAllUsers() {
         }
     }
 }
-
 int Shop::GetUserIndex() {
     int index = 0;
     if (!IsUserListEmpty()) {
@@ -391,7 +323,6 @@ int Shop::GetUserIndex() {
     }
     return index - 1;
 }
-
 void Shop::UpdateUser() {
     int index = GetUserIndex();
     if (index == -1) return;
@@ -399,7 +330,6 @@ void Shop::UpdateUser() {
     listOfUsers[index].SetAddress();
     listOfUsers[index].SetPhone();
 }
-
 void Shop::ShowAllUsers(int type) {
     string role;
     int count = 0;
@@ -426,25 +356,23 @@ void Shop::ShowAllUsers(int type) {
     }
     if (count == 0) cout << "No users with this role available" << endl;
 }
-
 void Shop::RentItem(eRentalType type) {
-    bool onlyAvailableItem = true;
+    bool fullyAvailableItem = false;
     bool isLendingItem = true;
-    int indexForItem = GetItemIndex(type, onlyAvailableItem);
+    int indexForItem = GetItemIndex(type, fullyAvailableItem);
     if (indexForItem == -1) return;
     int indexForUser = GetUserIndex();
     if (indexForUser == -1) return;
 
     if (listOfUsers[indexForUser].GetRole() == "Guest" &&
-        listOfVideoGames[indexForItem].GetLoanType() == "2-day") {
+        listOfItem[indexForItem]->GetLoanType() == "2-day") {
         cout << "Only Regular and VIP member can borrow 2-day Video items" << endl;
         return;
     }
     listOfItem[indexForItem]->SetAvailableCopies(isLendingItem);
-    listOfUsers[indexForUser].AddRental(listOfVideoGames[indexForItem].GetId());
+    listOfUsers[indexForUser].AddRental(listOfItem[indexForItem]->GetId());
 
 }
-
 Item* Shop::FindItemById(string itemId) {
     for (int i = 0; i < listOfItem.size(); i++) {
         if (listOfItem[i]->GetId() == itemId) {
@@ -453,7 +381,6 @@ Item* Shop::FindItemById(string itemId) {
     }
     return NULL;
 }
-
 User* Shop::FindUserById(string itemId) {
     for (int i = 0; i < listOfUsers.size(); i++) {
         if (listOfUsers[i].GetId() == itemId) {
@@ -462,7 +389,6 @@ User* Shop::FindUserById(string itemId) {
     }
     return NULL;
 }
-
 void Shop::ReturnItem() {
     int count = 0;
     int indexForUser;
@@ -477,7 +403,6 @@ void Shop::ReturnItem() {
         cout << "There is no user that borrow the item from the shop" << endl;
         return;
     }
-
     do {
         cout << "Select a user: ";
         cin >> indexForUser;
@@ -486,7 +411,6 @@ void Shop::ReturnItem() {
     } while (!(indexForUser >= 1 && indexForUser <= count));
     indexForUser--;
     User u = listOfUsers[indexForUser];
-
     for (int i = 0; i < u.GetListOfRentals().size(); i++) {
         Item* item = FindItemById(u.GetListOfRentals()[i]);
         cout << i + 1 << ". ID: " << item->GetId()
@@ -502,7 +426,6 @@ void Shop::ReturnItem() {
     string chosenReturnedItemId = listOfUsers[indexForUser].ReturnRental(indexForItem);
     FindItemById(chosenReturnedItemId)->updateValueAfterReturning();
 }
-
 void Shop::SearchForItem(int type) {
     if (type == 1) {
         string input;
@@ -513,10 +436,12 @@ void Shop::SearchForItem(int type) {
                 cout << "Invalid format. Format: Ixxx-yyyy (x, y are number). Try again" << endl;
         } while (!Item::CheckId(input));
         Item* item = FindItemById(input);
-        if (!item)
+        if (!item) {
             cout << "Can not find item that match the description" << endl;
-        else
+        }
+        else {
             DisplayItemInfo(item, 1);
+        }
     }
     else if (type == 2) {
         int count = 0;
@@ -529,11 +454,11 @@ void Shop::SearchForItem(int type) {
                 DisplayItemInfo(listOfItem[i], ++count);
             }
         }
-        if (count == 0)
+        if (count == 0) {
             cout << "Can not find item that match the description" << endl;
+        }
     }
 }
-
 void Shop::SearchForUser(int type) {
     if (type == 1) {
         string input;
@@ -574,20 +499,18 @@ void Shop::StockFromStorage(string filename) {
         // the while loop ends then the end of the file is reached
         while (!coeff.eof()) {
             string id, title, rentalTypeString, loanType, copies, rentalFee, genreString, line;
-            eRentalType type = game;
+            eRentalType rentalType = game;
             eGenre genre = action;
-
             getline(coeff, line);
             // Vector of string to save tokens
             vector <string> tokens;
             // stringstream class check1
             stringstream check1(line);
             string intermediate;
-
-            while (getline(check1, intermediate, ','))
-            {
+            while (getline(check1, intermediate, ',')) {
                 tokens.push_back(intermediate);
             }
+            cout << "size of line vector: " << tokens.size() << endl;
             id = tokens[0];
             title = tokens[1];
             rentalTypeString = tokens[2];
@@ -595,15 +518,17 @@ void Shop::StockFromStorage(string filename) {
             copies = tokens[4];
             rentalFee = tokens[5];
             if (rentalTypeString == "Game") {
-                type = game;
+                rentalType = game;
             }
             else if (rentalTypeString == "Record") {
-                type = record;
+                rentalType = record;
             }
             else if (rentalTypeString == "DVD") {
-                type = dvd;
+                rentalType = dvd;
             }
-            Item* itemPtr = NULL;
+           
+            // Item videoGame();
+            // SpecialItem item();
             if (tokens.size() == 7) {
                 genreString = tokens[6];
                 if (genreString == "Action") {
@@ -618,25 +543,15 @@ void Shop::StockFromStorage(string filename) {
                 else if (genreString == "Comedy") {
                     genre = comedy;
                 }
-                SpecialItem item(id, title, type, loanType, stoi(copies), stof(rentalFee), genre);
-                itemPtr = &item;
+                SpecialItem item(id, title, rentalType, loanType, stoi(copies), stof(rentalFee), genre);
+                listOfItem.push_back(new SpecialItem(id, title, rentalType, loanType, stoi(copies), stof(rentalFee), genre));
             }
             else if (tokens.size() == 6) {
-                Item videoGame(id, title, type, loanType, stoi(copies), stof(rentalFee));
-                itemPtr = &videoGame;
+                Item videoGame(id, title, rentalType, loanType, stoi(copies), stof(rentalFee));
+                listOfItem.push_back(new Item(id, title, rentalType, loanType, stoi(copies), stof(rentalFee)));
             }
-            /*
-            cout << "from reading " << itemPtr->GetId() << ", "
-                << itemPtr->GetTitle() << ", "
-                << itemPtr->GetRentalType() << ", "
-                << itemPtr->GetLoanType() << ", "
-                << itemPtr->GetNumberOfCopies() << ", "
-                << itemPtr->GetRentalFee() << endl;
-            */
-
-            //DisplayItemInfo(itemPtr, 0);
-            listOfItem.push_back(itemPtr);
-
+    
+            
         }
     }
     else {

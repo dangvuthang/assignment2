@@ -1,6 +1,3 @@
-# a customer record has the following format
-#ID,Name,Address,Phone,Number of rentals,customer type followed by a list of items' IDs
-#you can remove or ignore these comments (start with #) when you run your program
 C001,Minh Dinh,18 Irwin Street,0421473243,3,VIP
 I001-2001
 I002-1988

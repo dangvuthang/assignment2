@@ -16,6 +16,13 @@ int main() {
     Shop shop;
     shop.StockFromStorage("items.txt");
     //shop.ShowAllItems();
+    // SpecialItem sItem("I111-1111", "startshipp trooper " , dvd,"1-week", 7, 15.97, action);
+    // Item *ptr = &sItem;
+    // cout << "the genre is: " << ptr->GetGenreString() << endl;
+    // vector<Item*> v;
+    // v.push_back(ptr);
+    // cout << "the genre in vector is: " <<  v[0]->GetGenreString() << endl;
+    // cout << "the rental type is : " << v[0]->GetRentalType() << endl;
     
     do {
         Menu::DisplayMainMenu();
