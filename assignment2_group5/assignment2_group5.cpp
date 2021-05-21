@@ -96,10 +96,13 @@ int main(int argc, char *argv[]) {
   } while (option != "Exit");
 
   // SAVE
-  cout << "Saving data..." << endl;
+  cout << "Saving data to..." << endl;
   shop.saveItem(itemFile);
   shop.saveUser(customerFile);
   cout << "Done." << endl;
+
+  cout << "ASSIGNMENT 2 GROUP 5" << endl;
+  cout << "s3879303@rmit.edu.vn, Thang, Dang" << endl;
 
   return 0;
 }
