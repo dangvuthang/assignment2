@@ -10,7 +10,7 @@ User::User() {
   this->rewardPointForVIP = 0;
 }
 User::User(string id, string name, string address, string phone, string role,
-           int numberOfItemReturned, vector<string> listOfRentals) {
+           int numberOfItemReturned, int rewardPointForVIP, vector<string> listOfRentals) {
   this->id = id;
   this->name = name;
   this->address = address;
@@ -19,7 +19,7 @@ User::User(string id, string name, string address, string phone, string role,
   this->numberOfItemReturned = numberOfItemReturned;
   this->listOfRentals = listOfRentals;
   // Add more field include it when save, and read. Tks you
-  this->rewardPointForVIP = 0;
+  this->rewardPointForVIP = rewardPointForVIP;
 }
 string User::GetId() { return id; }
 string User::GetName() { return name; }

@@ -827,14 +827,16 @@ void Shop::saveItem(string itemFile) {
 void Shop::saveUser(string userFile) {
   ofstream usercsv(userFile);
 
-  usercsv << "ID,name,address,phone,role,number of item returned,list rentals"
+  usercsv << "ID,name,address,phone,role,number of item returned,reward point,list rentals"
           << endl;
 
   // Save video games
   for (User user : this->listOfUsers) {
     usercsv << user.GetId() << "," << user.GetName() << "," << user.GetAddress()
             << "," << user.GetPhone() << "," << user.GetRole() << ","
-            << user.GetNumberOfItemReturned() << ",";
+            << user.GetNumberOfItemReturned() << ","
+            << user.GetRewardPointForVIP() << ",";
+
 
     vector<string> listOfRental = user.GetListOfRentals();
     for (auto it = listOfRental.begin(); it != listOfRental.end(); ++it) {
@@ -925,6 +927,6 @@ void Shop::loadUser(string userFile) {
 
     this->listOfUsers.push_back(
         User(resultLine[0], resultLine[1], resultLine[2], resultLine[3],
-             resultLine[4], stoi(resultLine[5]), listOfRentals));
+             resultLine[4], stoi(resultLine[5]),stoi(resultLine[6]), listOfRentals));
   }
 }

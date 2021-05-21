@@ -17,7 +17,7 @@ class User {
  public:
   User();
   User(string id, string name, string address, string phone, string role,
-       int numberOfItemReturned, vector<string> listOfRentals);
+       int numberOfItemReturned,int rewardPointForVIP, vector<string> listOfRentals);
   string GetId();
   string GetName();
   string GetAddress();
