@@ -854,6 +854,7 @@ void Shop::saveUser(string userFile) {
   if (userFile.find(".csv") == string::npos) {
     userFile += ".csv";
   }
+  cout << userFile << endl;
   ofstream usercsv(userFile);
 
   usercsv << "ID,name,address,phone,role,number of item returned,reward "
@@ -877,6 +878,9 @@ void Shop::saveUser(string userFile) {
 }
 
 void Shop::loadItem(string itemFile) {
+  if (itemFile.find(".csv") == -1) {
+    itemFile += ".csv";
+  }
   ifstream itemcsv(itemFile);
 
   if (!itemcsv.is_open()) {
@@ -927,6 +931,9 @@ void Shop::loadItem(string itemFile) {
 }
 
 void Shop::loadUser(string userFile) {
+  if (userFile.find(".csv") == -1) {
+    userFile += ".csv";
+  }
   ifstream usercsv(userFile);
 
   if (!usercsv.is_open()) {

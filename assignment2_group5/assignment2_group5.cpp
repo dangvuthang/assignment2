@@ -20,8 +20,6 @@ int main(int argc, char *argv[]) {
 
   string itemFile = argv[1];
   string customerFile = argv[2];
-  // string itemFile = "items";
-  // string customerFile = "customers";
   string option;
   Shop shop;
 
