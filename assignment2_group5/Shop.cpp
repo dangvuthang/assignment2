@@ -846,7 +846,7 @@ void Shop::saveItem(string itemFile) {
             << item.GetNumberOfCopies() << "," << item.GetRentalFee() << ","
             << item.GetRentalStatus() << "," << item.GetGenre() << "\n";
   }
-
+  cout << "Item file name: " << itemFile << endl;
   itemcsv.close();
 }
 
@@ -875,6 +875,8 @@ void Shop::saveUser(string userFile) {
     }
     usercsv << "\n";
   }
+  cout << "User file name: " << userFile << endl;
+  usercsv.close();
 }
 
 void Shop::loadItem(string itemFile) {
@@ -949,7 +951,7 @@ void Shop::loadUser(string userFile) {
   if (line !=
       "ID,name,address,phone,role,number of item returned,reward point,list "
       "rentals") {
-    cout << "ITEM FILE HAS INCORRECT FORMAT" << endl;
+    cout << "ITEM FILE HAS INCORRECT FORMAT." << endl;
   } else {
     while (getline(usercsv, line)) {
       stringstream ss(line);

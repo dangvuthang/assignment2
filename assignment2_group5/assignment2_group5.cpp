@@ -13,7 +13,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
   if (argc != 3) {
-    cout << "To run: <program> <item csv file path> <customer csv file path>"
+    cout << "To run: <program> <item file csv name> <customer csv file name>"
          << endl;
     exit(0);
   }
@@ -101,5 +101,5 @@ int main(int argc, char *argv[]) {
   shop.saveUser(customerFile);
   cout << "Done." << endl;
 
-  return 0;
+    return 0;
 }

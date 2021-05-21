@@ -50,5 +50,4 @@ class Shop {
   void loadItem(string itemFile);
   void loadUser(string userFile);
   void UpdateID();
-
 };
